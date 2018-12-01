@@ -1,0 +1,512 @@
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu"))
+library(wordcloud)
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu", "will"))
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#remove obvious or nonsensical words
+cleananAlytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+library(twitteR)
+library(tm)
+setwd("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 3")
+#set up necessary credentials
+ck <- "EUENyJUa8hrF1UGX2hGtntsAt"
+cs <- "UmARrjPzF2uTGOpzwmgoEvfDwT8kaIUjsiBr9ZLeV8bhfmWH5j"
+at <- "384339592-ENp0huPiFt1kCAGZQzo44kH8C8aaGgEkhFTPz38x"
+as <- "gncNiTOeBvz52QIGdubR1Z2pjSneIWcqAKXajiVEKLvw1"
+setup_twitter_oauth(ck, cs, access_token = at, access_secret = as)
+#collect the stream of tweets and storing it as a dataframe
+t_stream <- searchTwitter('blockchain', resultType="recent", n=500, lang = "en")
+blockchainTweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+t_stream <- searchTwitter('analytics', resultType="recent", n=500, lang = "en")
+analyticsTweets <- do.call("rbind", lapply(t_stream, as.data.frame, lang = "en"))
+t_stream <- searchTwitter('artificial intelligence', resultType="recent", n=500)
+AITweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+#we save the files in case we want to analyse these tweets at later date
+write.table(blockchainTweets, "blockchainTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(analyticsTweets, "analyticsTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(AITweets, "AITweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+#only select the columns we will use.
+blockchainTweets <- subset(blockchainTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+analyticsTweets <- subset(analyticsTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+AITweets <- subset(AITweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+#Before we can analyse the text we need to clean all the data, afterwards we create a wordcloud,
+#this process is done for all 3 themes.
+#this is for blockchain
+#remove quotation marks
+blockchainTweets[,1] <- gsub('"',"",blockchainTweets[,1])
+#remove emoji's
+blockchainTweets$text = sapply(blockchainTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+blockchainTweets_text = c(blockchainTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(blockchainTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu", "will"))
+#this is for analytics
+#remove quotation marks
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleananAlytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+#this is for AI
+#remove quotation marks
+AITweets[,1] <- gsub('"',"",AITweets[,1])
+#remove emoji's
+AITweets$text = sapply(AITweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+AITweets_text = c(AITweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(AITweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAI = tm_map(tweets_corpus_clean, removeWords, c("facebook", "httpstcokrux", "intelligence", "artificial", "userexperienceu"))
+library(wordcloud)
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu", "will", "bethereumteam"))
+library(wordcloud)
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+library(twitteR)
+library(tm)
+setwd("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 3")
+#set up necessary credentials
+ck <- "EUENyJUa8hrF1UGX2hGtntsAt"
+cs <- "UmARrjPzF2uTGOpzwmgoEvfDwT8kaIUjsiBr9ZLeV8bhfmWH5j"
+at <- "384339592-ENp0huPiFt1kCAGZQzo44kH8C8aaGgEkhFTPz38x"
+as <- "gncNiTOeBvz52QIGdubR1Z2pjSneIWcqAKXajiVEKLvw1"
+setup_twitter_oauth(ck, cs, access_token = at, access_secret = as)
+#collect the stream of tweets and storing it as a dataframe
+t_stream <- searchTwitter('blockchain', resultType="recent", n=500, lang = "en")
+blockchainTweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+t_stream <- searchTwitter('analytics', resultType="recent", n=500, lang = "en")
+analyticsTweets <- do.call("rbind", lapply(t_stream, as.data.frame, lang = "en"))
+t_stream <- searchTwitter('artificial intelligence', resultType="recent", n=500)
+AITweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+#we save the files in case we want to analyse these tweets at later date
+write.table(blockchainTweets, "blockchainTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(analyticsTweets, "analyticsTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(AITweets, "AITweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+#only select the columns we will use.
+blockchainTweets <- subset(blockchainTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+analyticsTweets <- subset(analyticsTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+AITweets <- subset(AITweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+#Before we can analyse the text we need to clean all the data, afterwards we create a wordcloud,
+#this process is done for all 3 themes.
+#this is for blockchain
+#remove quotation marks
+blockchainTweets[,1] <- gsub('"',"",blockchainTweets[,1])
+#remove emoji's
+blockchainTweets$text = sapply(blockchainTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+blockchainTweets_text = c(blockchainTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(blockchainTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu", "will", "bethereumteam"))
+#this is for analytics
+#remove quotation marks
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleananAlytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+#this is for AI
+#remove quotation marks
+AITweets[,1] <- gsub('"',"",AITweets[,1])
+#remove emoji's
+AITweets$text = sapply(AITweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+AITweets_text = c(AITweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(AITweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAI = tm_map(tweets_corpus_clean, removeWords, c("facebook", "httpstcokrux", "intelligence", "artificial", "userexperienceu"))
+library(wordcloud)
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+library(cluster)
+library(class)
+library(C50)
+library(rpart)
+library(rpart.plot)
+#Loading Data & removing fist row (index variable)
+library(readr)
+spotify <- read_csv("spotify.csv", col_types = cols(X1 = col_skip()))
+spotify <- spotify[complete.cases(spotify),]
+# Removing 68 NA instances
+spotify <- spotify[complete.cases(spotify) ,]
+View(spotify)
+library(cluster)
+library(class)
+library(C50)
+library(rpart)
+library(rpart.plot)
+#Loading Data & removing fist row (index variable)
+library(readr)
+spotify <- read_csv("spotify.csv", col_types = cols(X1 = col_skip()))
+spotify <- spotify[complete.cases(spotify),]
+spotify_num <- spotify[,c(1:5 ,7,8,10,11,13)]
+spotify_scaled <- scale(spotify_num)
+is.data.frame(spotify_scaled)
+spotify_scaled <- scale(spotify_num)
+df_spotify_scaled <- as.data.frame(spotify_scaled) #i believe this step is unnecessary
+is.data.frame(df_spotify_scaled)
+# Find cluster solution, K = 4
+rsltKmeans <- kmeans(df_spotify_scaled, 4)
+# Cluster Plot against 1st 2 principal components
+clusplot(df_spotify_scaled, rsltKmeans$cluster,
+color=TRUE, shade=TRUE,
+labels=4, lines=0)
+# Find cluster solution, K = 3
+rsltKmeans <- kmeans(df_spotify_scaled, 3)
+# Cluster Plot against 1st 2 principal components
+clusplot(df_spotify_scaled, rsltKmeans$cluster,
+color=TRUE, shade=TRUE,
+labels=4, lines=0)
+# Find cluster solution, K = 2
+rsltKmeans <- kmeans(df_spotify_scaled, 2)
+# Cluster Plot against 1st 2 principal components
+clusplot(df_spotify_scaled, rsltKmeans$cluster,
+color=TRUE, shade=TRUE,
+labels=4, lines=0)
+# The wss variables is initialised
+wss <- (nrow(df_spotify_scaled)-1)*sum(apply(df_spotify_scaled,2,var))
+# This for loop iterates the number of K clusters from 2 untill 15
+for (i in 2:15) wss[i] <- sum(kmeans(df_spotify_scaled,
+centers=i)$withinss)
+# Plotting the graph
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+ylab="Within groups sum of squares")
+# The wss variables is initialised
+wss <- (nrow(df_spotify_scaled)-1)*sum(apply(df_spotify_scaled,2,var))
+# This for loop iterates the number of K clusters from 2 untill 15
+for (i in 2:15) wss[i] <- sum(kmeans(df_spotify_scaled,
+centers=i)$withinss)
+# Plotting the graph
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+ylab="Within groups sum of squares")
+# The wss variables is initialised
+wss <- (nrow(df_spotify_scaled)-1)*sum(apply(df_spotify_scaled,2,var))
+# This for loop iterates the number of K clusters from 2 untill 15
+for (i in 2:15) wss[i] <- sum(kmeans(df_spotify_scaled,
+centers=i)$withinss)
+# Plotting the graph
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+ylab="Within groups sum of squares")
+# The wss variables is initialised
+wss <- (nrow(df_spotify_scaled)-1)*sum(apply(df_spotify_scaled,2,var))
+# This for loop iterates the number of K clusters from 2 untill 15
+for (i in 2:15) wss[i] <- sum(kmeans(df_spotify_scaled,
+centers=i)$withinss)
+# Plotting the graph
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+ylab="Within groups sum of squares")
+#Ensuring that clusters are set to 2.
+rsltKmeans <- kmeans(df_spotify_scaled, 2)
+# Add the cluster values to the original data set (the target variable)
+spotify <- data.frame(spotify, cluster=as.factor(rsltKmeans$cluster))
+# A decision tree model to explain Cluster memberships
+mdlTree <- cluster ~ loudness + instrumentalness + danceability + energy + liveness + loudness
+rsltTree <-rpart(mdlTree,
+data = spotify,
+method = "class",
+parms=list(split="information"))
+# Plot the decision tree
+rpart.plot(rsltTree,
+box.col= c("grey","green","grey")[rsltTree$frame$yval],
+extra = 102)
+library(wordcloud)
+wordcloud(cleanBlockchain, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleananAlytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#remove obvious or nonsensical words
+cleanAnalytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+#remove obvious or nonsensical words
+cleanAI = tm_map(tweets_corpus_clean, removeWords, c("facebook", "httpstcokrux", "intelligence", "artificial", "userexperienceu", "will"))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+wordcloud(cleanAI, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+cubeTimeline <- userTimeline("bethereumteam")
+cubeTimeline <- userTimeline("cubeyou")
+str(cubeTimeline)
+View(cubeTimeline)
+userexperienceTimline <- userTimeline("userexperienceu")
+str(userexperienceTimline)
+bethereumTimeline <- userTimeline("bethereumteam")
+str(bethereumTimeline)
+View(bethereumTimeline)
+cubeTimeline[[4]]$getText()
+userexperienceTimeline <- userTimeline("userexperienceu")
+dfcube <- twListToDF(cubeTimeline)
+dfuser <- twListToDF(userexperienceTimeline)
+dfbethereum <- twListToDF(bethereumTimeline)
+View(dfcube)
+#this is for analytics
+#remove quotation marks
+analyticsTweets <- dfcube
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAnalytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+wordcloud(cleanAnalytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#this is for analytics
+#remove quotation marks
+analyticsTweets <- dfuser
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAnalytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+wordcloud(cleanAnalytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+#put them into a data frame
+dfcube <- twListToDF(cubeTimeline)
+dfuser <- twListToDF(userexperienceTimeline)
+dfbethereum <- twListToDF(bethereumTimeline)
+#this is for analytics
+#remove quotation marks
+analyticsTweets <- dfbethereum
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAnalytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+wordcloud(cleanAnalytics, random.order = F, max.words = 50, scale = c(3, 0.5), colors = rainbow(50))
+dfcube$text
+dfuser$text
+dfbethereum$text
+library(twitteR)
+library(tm)
+setwd("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 3")
+#set up necessary credentials
+ck <- "EUENyJUa8hrF1UGX2hGtntsAt"
+cs <- "UmARrjPzF2uTGOpzwmgoEvfDwT8kaIUjsiBr9ZLeV8bhfmWH5j"
+at <- "384339592-ENp0huPiFt1kCAGZQzo44kH8C8aaGgEkhFTPz38x"
+as <- "gncNiTOeBvz52QIGdubR1Z2pjSneIWcqAKXajiVEKLvw1"
+setup_twitter_oauth(ck, cs, access_token = at, access_secret = as)
+#collect the stream of tweets and storing it as a dataframe
+t_stream <- searchTwitter('blockchain', resultType="recent", n=500, lang = "en")
+blockchainTweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+t_stream <- searchTwitter('analytics', resultType="recent", n=500, lang = "en")
+analyticsTweets <- do.call("rbind", lapply(t_stream, as.data.frame, lang = "en"))
+t_stream <- searchTwitter('artificial intelligence', resultType="recent", n=500)
+AITweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+#we save the files in case we want to analyse these tweets at later date
+write.table(blockchainTweets, "blockchainTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(analyticsTweets, "analyticsTweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+write.table(AITweets, "AITweets.csv", row.names = FALSE, col.names = TRUE, sep =";")
+#only select the columns we will use.
+blockchainTweets <- subset(blockchainTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+analyticsTweets <- subset(analyticsTweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+AITweets <- subset(AITweets, select=c("text","created",
+"screenName", "isRetweet","id"))
+#Before we can analyse the text we need to clean all the data, afterwards we create a wordcloud,
+#this process is done for all 3 themes.
+#this is for blockchain
+#remove quotation marks
+blockchainTweets[,1] <- gsub('"',"",blockchainTweets[,1])
+#remove emoji's
+blockchainTweets$text = sapply(blockchainTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+blockchainTweets_text = c(blockchainTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(blockchainTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanBlockchain = tm_map(tweets_corpus_clean, removeWords, c("blockchain", "https", "murthaburke", "amp", "userexperienceu", "will", "bethereumteam"))
+#this is for analytics
+#remove quotation marks
+analyticsTweets[,1] <- gsub('"',"",analyticsTweets[,1])
+#remove emoji's
+analyticsTweets$text = sapply(analyticsTweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+analyticsTweets_text = c(analyticsTweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(analyticsTweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAnalytics = tm_map(tweets_corpus_clean, removeWords, c("analytics", "https", "thanks", "mention", "cubeyou", "according"))
+#this is for AI
+#remove quotation marks
+AITweets[,1] <- gsub('"',"",AITweets[,1])
+#remove emoji's
+AITweets$text = sapply(AITweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+#create character vector
+AITweets_text = c(AITweets$text)
+#create corpus
+tweets_corpus = Corpus(VectorSource(AITweets_text))
+#remove punctuation
+tweets_corpus_clean = tm_map(tweets_corpus, removePunctuation)
+#only lower case
+tweets_corpus_clean = tm_map(tweets_corpus_clean, content_transformer(tolower))
+#remove english stopwords
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeWords, stopwords("english"))
+#remove numbers
+tweets_corpus_clean = tm_map(tweets_corpus_clean, removeNumbers)
+#remove unnecessary white space
+tweets_corpus_clean = tm_map(tweets_corpus_clean, stripWhitespace)
+#remove obvious or nonsensical words
+cleanAI = tm_map(tweets_corpus_clean, removeWords, c("facebook", "httpstcokrux", "intelligence", "artificial", "userexperienceu", "will"))
+View(AITweets)
+knit_with_parameters('C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 3/487148_409763.Rmd')
+install.packages(c('tinytex', 'rmarkdown'))
+tinytex::install_tinytex()
+install.packages(c("tinytex", "rmarkdown"))
+knitr::opts_chunk$set(echo = TRUE)
+tinytex::install_tinytex()

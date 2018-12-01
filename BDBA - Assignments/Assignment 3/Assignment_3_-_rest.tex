@@ -1,0 +1,2735 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={BDBA: Weekly Assignment 3},
+            pdfauthor={Rutger Smid, 487148 \& Loic Roldan Waals, 409763},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{BDBA: Weekly Assignment 3}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Rutger Smid, 487148 \& Loic Roldan Waals, 409763}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{9-4-2018}
+
+
+\begin{document}
+\maketitle
+
+\section{Question 1}\label{question-1}
+
+\subsection{(a) Compute the Centroids}\label{a-compute-the-centroids}
+
+We first compute the X1 and X2 values for the two centroids as follows:
+
+\textbf{Computing Centroid 1:}
+
+X1 = (1+5+6)/3 = 4
+
+X2 = (4+1+2)/3 = 2.33
+
+\textbf{Computing Centroid 2:}
+
+X1 = (1+0+4)/3 = 1.66
+
+X2 = (3+4+0)/3 = 2.33
+
+Thus \emph{Centroid 1} has the values of 4 and 2.33 for X1 and X2
+respectively. For \emph{Centroid 2} these values are 1.66 and 2.33
+
+\subsection{(b) Reassigning
+Observations}\label{b-reassigning-observations}
+
+First the distance of each observation to the two centroids is
+calculated. The distance from \emph{Centroid 1} to \emph{observation 1}
+is calculated with: sqrt((4 - 1)\^{}2 + (2.33 - 4)\^{}2) = 3.43. The
+same method is used to calculate the distance to \emph{Centroid 2},
+which gives us a value of 1.80. This allows us to conclude that
+\emph{observation 1} is closest to \emph{Centroid 2} and thus it will be
+assigned to it.
+
+The same method is used for all the other observations, the new cluster
+labels are:
+
+\begin{itemize}
+\tightlist
+\item
+  observation 1 = Centroid 2
+\item
+  observation 2 = Centroid 2
+\item
+  observation 3 = Centroid 2
+\item
+  observation 4 = Centroid 1
+\item
+  observation 5 = Centroid 1
+\item
+  observation 6 = Centroid 1
+\end{itemize}
+
+\subsection{(c) Recalculating Cluster
+Centroids}\label{c-recalculating-cluster-centroids}
+
+\textbf{Computing Centroid 1:}
+
+X1 = (5+6+4)/3 = 5
+
+X2 = (1+2+0)/3 = 1
+
+\textbf{Computing Centroid 2:}
+
+X1 = (1+1+0)/3 = 0,66
+
+X2 = (4+3+4)/3 = 3,66
+
+When reassigning the observations to the centroids we find that none
+changed. This means that the final values for \emph{Centroid 1} are X1 =
+5, X2 = 1 and that the final values for \emph{Centroid 2} are X1 = 0.66,
+X2 = 3.66. The cluster labels are the same as in \textbf{Question 1
+(a)}:
+
+\begin{itemize}
+\tightlist
+\item
+  observation 1 = Centroid 2
+\item
+  observation 2 = Centroid 2
+\item
+  observation 3 = Centroid 2
+\item
+  observation 4 = Centroid 1
+\item
+  observation 5 = Centroid 1
+\item
+  observation 6 = Centroid 1
+\end{itemize}
+
+\section{Question 2}\label{question-2}
+
+Accuracy is a simple performance measure and not suitable for
+classifying imbalanced data sets. Accuracy simply divides the number of
+correct predictions by the total number of predictions. Although it can
+give an indication of the quality of the model, it should always be
+compared with the baseline accuracy of a model/data set. Let's say you
+want to build a model which diagnoses whether a patient has disease X.
+It might not be a common disease so 999 out of 1000 patients will not
+have this disease, this is an example of an imbalanced data set. Then, a
+model which simply predicts that no patients have this disease will
+yield an accuracy of 99.9\%. This sounds impressive, but the model is
+not very useful in practice. Looking back at Week 1's assignment, the
+final model had a accuracy of 70\% by predicting \emph{US} for all
+observations. This was simply due to the fact that 70\% of the
+population would travel to the US.
+
+An implication of this problem is that for imbalanced data sets, another
+performance metric should be used. A solution to this problem is the
+\emph{Receiver Operating Characteristic} (ROC) curve which allows the
+comparison of models without knowing the class distribution. The ROC
+curve is plotted using thee true positive rate (TPR) against the false
+positive rate (FPR). The ROC curve allows us to compare different models
+and interpret their performance easily, even in the case of imbalanced
+data sets.
+
+\section{Question 3}\label{question-3}
+
+First we will collect all the tweets. We searched for the 500 most
+recent English tweets containing \emph{blockchain, analytics} and
+\emph{artificial reality}. After collecting the tweets they are exported
+as a CSV file in case we want to use the same tweets for the future.
+Finally we clean the data and prepare it for visualization. Only 500
+tweets were used per topic due to limited computing power. In the
+section where we remove specific words, the following procedure was
+followed:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  create the word cloud
+\item
+  check for any word that does not add meaning (e.g. ``thanks'')
+\item
+  generate the word cloud again and repeat the steps
+\end{enumerate}
+
+Additionally the words that were used in the search queries were also
+removed as all the searched tweets contain the searched words. Names of
+twitter accounts were also deleted. The code below is used to generate
+the data sets of tweets:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(twitteR)}
+\KeywordTok{library}\NormalTok{(tm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: NLP
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 3"}\NormalTok{)}
+
+\CommentTok{#set up necessary credentials}
+\NormalTok{ck <-}\StringTok{ "EUENyJUa8hrF1UGX2hGtntsAt"}
+\NormalTok{cs <-}\StringTok{ "UmARrjPzF2uTGOpzwmgoEvfDwT8kaIUjsiBr9ZLeV8bhfmWH5j"}
+\NormalTok{at <-}\StringTok{ "384339592-ENp0huPiFt1kCAGZQzo44kH8C8aaGgEkhFTPz38x"}
+\NormalTok{as <-}\StringTok{ "gncNiTOeBvz52QIGdubR1Z2pjSneIWcqAKXajiVEKLvw1"}
+
+\KeywordTok{setup_twitter_oauth}\NormalTok{(ck, cs, }\DataTypeTok{access_token =}\NormalTok{ at, }\DataTypeTok{access_secret =}\NormalTok{ as)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Using direct authentication"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#collect the stream of tweets and storing it as a dataframe}
+\NormalTok{t_stream <-}\StringTok{ }\KeywordTok{searchTwitter}\NormalTok{(}\StringTok{'blockchain'}\NormalTok{, }\DataTypeTok{resultType=}\StringTok{"recent"}\NormalTok{, }\DataTypeTok{n=}\DecValTok{500}\NormalTok{, }\DataTypeTok{lang =} \StringTok{"en"}\NormalTok{)}
+\NormalTok{blockchainTweets <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(}\StringTok{"rbind"}\NormalTok{, }\KeywordTok{lapply}\NormalTok{(t_stream, as.data.frame))}
+
+\NormalTok{t_stream <-}\StringTok{ }\KeywordTok{searchTwitter}\NormalTok{(}\StringTok{'analytics'}\NormalTok{, }\DataTypeTok{resultType=}\StringTok{"recent"}\NormalTok{, }\DataTypeTok{n=}\DecValTok{500}\NormalTok{, }\DataTypeTok{lang =} \StringTok{"en"}\NormalTok{)}
+\NormalTok{analyticsTweets <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(}\StringTok{"rbind"}\NormalTok{, }\KeywordTok{lapply}\NormalTok{(t_stream, as.data.frame, }\DataTypeTok{lang =} \StringTok{"en"}\NormalTok{))}
+
+\NormalTok{t_stream <-}\StringTok{ }\KeywordTok{searchTwitter}\NormalTok{(}\StringTok{'artificial intelligence'}\NormalTok{, }\DataTypeTok{resultType=}\StringTok{"recent"}\NormalTok{, }\DataTypeTok{n=}\DecValTok{500}\NormalTok{)}
+\NormalTok{AITweets <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(}\StringTok{"rbind"}\NormalTok{, }\KeywordTok{lapply}\NormalTok{(t_stream, as.data.frame))}
+
+
+\CommentTok{#we save the files in case we want to analyse these tweets at later date}
+\KeywordTok{write.table}\NormalTok{(blockchainTweets, }\StringTok{"blockchainTweets.csv"}\NormalTok{, }\DataTypeTok{row.names =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col.names =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =}\StringTok{";"}\NormalTok{)}
+\KeywordTok{write.table}\NormalTok{(analyticsTweets, }\StringTok{"analyticsTweets.csv"}\NormalTok{, }\DataTypeTok{row.names =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col.names =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =}\StringTok{";"}\NormalTok{)}
+\KeywordTok{write.table}\NormalTok{(AITweets, }\StringTok{"AITweets.csv"}\NormalTok{, }\DataTypeTok{row.names =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col.names =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =}\StringTok{";"}\NormalTok{)}
+
+
+\CommentTok{#only select the columns we will use.}
+\NormalTok{blockchainTweets <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(blockchainTweets, }\DataTypeTok{select=}\KeywordTok{c}\NormalTok{(}\StringTok{"text"}\NormalTok{,}\StringTok{"created"}\NormalTok{,}
+                                                      \StringTok{"screenName"}\NormalTok{, }\StringTok{"isRetweet"}\NormalTok{,}\StringTok{"id"}\NormalTok{)) }
+\NormalTok{analyticsTweets <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(analyticsTweets, }\DataTypeTok{select=}\KeywordTok{c}\NormalTok{(}\StringTok{"text"}\NormalTok{,}\StringTok{"created"}\NormalTok{,}
+                                                    \StringTok{"screenName"}\NormalTok{, }\StringTok{"isRetweet"}\NormalTok{,}\StringTok{"id"}\NormalTok{))}
+\NormalTok{AITweets <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(AITweets, }\DataTypeTok{select=}\KeywordTok{c}\NormalTok{(}\StringTok{"text"}\NormalTok{,}\StringTok{"created"}\NormalTok{,}
+                                                      \StringTok{"screenName"}\NormalTok{, }\StringTok{"isRetweet"}\NormalTok{,}\StringTok{"id"}\NormalTok{))}
+
+\CommentTok{#Before we can analyse the text we need to clean all the data, afterwards we create a wordcloud,}
+\CommentTok{#this process is done for all 3 themes.}
+
+\CommentTok{#this is for blockchain}
+\CommentTok{#remove quotation marks}
+\NormalTok{blockchainTweets[,}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{'"'}\NormalTok{,}\StringTok{""}\NormalTok{,blockchainTweets[,}\DecValTok{1}\NormalTok{])}
+\CommentTok{#remove emoji's}
+\NormalTok{blockchainTweets}\OperatorTok{$}\NormalTok{text =}\StringTok{ }\KeywordTok{sapply}\NormalTok{(blockchainTweets}\OperatorTok{$}\NormalTok{text, }\ControlFlowTok{function}\NormalTok{(row) }\KeywordTok{iconv}\NormalTok{(row, }\StringTok{"latin1"}\NormalTok{, }\StringTok{"ASCII"}\NormalTok{, }\DataTypeTok{sub =} \StringTok{""}\NormalTok{)) }
+\CommentTok{#create character vector}
+\NormalTok{blockchainTweets_text =}\StringTok{ }\KeywordTok{c}\NormalTok{(blockchainTweets}\OperatorTok{$}\NormalTok{text)                                                          }
+\CommentTok{#create corpus}
+\NormalTok{tweets_corpus =}\StringTok{ }\KeywordTok{Corpus}\NormalTok{(}\KeywordTok{VectorSource}\NormalTok{(blockchainTweets_text))                                          }
+\CommentTok{#remove punctuation}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus, removePunctuation)                                }
+\CommentTok{#only lower case}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, }\KeywordTok{content_transformer}\NormalTok{(tolower))                }
+\CommentTok{#remove english stopwords}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{stopwords}\NormalTok{(}\StringTok{"english"}\NormalTok{))           }
+\CommentTok{#remove numbers}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeNumbers)                               }
+\CommentTok{#remove unnecessary white space}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, stripWhitespace)                             }
+\CommentTok{#remove obvious or nonsensical words}
+\NormalTok{cleanBlockchain =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{c}\NormalTok{(}\StringTok{"blockchain"}\NormalTok{, }\StringTok{"https"}\NormalTok{, }\StringTok{"murthaburke"}\NormalTok{, }\StringTok{"amp"}\NormalTok{, }\StringTok{"userexperienceu"}\NormalTok{, }\StringTok{"will"}\NormalTok{, }\StringTok{"bethereumteam"}\NormalTok{))             }
+
+
+\CommentTok{#this is for analytics}
+\CommentTok{#remove quotation marks}
+\NormalTok{analyticsTweets[,}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{'"'}\NormalTok{,}\StringTok{""}\NormalTok{,analyticsTweets[,}\DecValTok{1}\NormalTok{])}
+\CommentTok{#remove emoji's}
+\NormalTok{analyticsTweets}\OperatorTok{$}\NormalTok{text =}\StringTok{ }\KeywordTok{sapply}\NormalTok{(analyticsTweets}\OperatorTok{$}\NormalTok{text, }\ControlFlowTok{function}\NormalTok{(row) }\KeywordTok{iconv}\NormalTok{(row, }\StringTok{"latin1"}\NormalTok{, }\StringTok{"ASCII"}\NormalTok{, }\DataTypeTok{sub =} \StringTok{""}\NormalTok{)) }
+\CommentTok{#create character vector}
+\NormalTok{analyticsTweets_text =}\StringTok{ }\KeywordTok{c}\NormalTok{(analyticsTweets}\OperatorTok{$}\NormalTok{text)                                                          }
+\CommentTok{#create corpus}
+\NormalTok{tweets_corpus =}\StringTok{ }\KeywordTok{Corpus}\NormalTok{(}\KeywordTok{VectorSource}\NormalTok{(analyticsTweets_text))                                          }
+\CommentTok{#remove punctuation}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus, removePunctuation)                                }
+\CommentTok{#only lower case}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, }\KeywordTok{content_transformer}\NormalTok{(tolower))                }
+\CommentTok{#remove english stopwords}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{stopwords}\NormalTok{(}\StringTok{"english"}\NormalTok{))           }
+\CommentTok{#remove numbers}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeNumbers)                               }
+\CommentTok{#remove unnecessary white space}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, stripWhitespace)                             }
+\CommentTok{#remove obvious or nonsensical words}
+\NormalTok{cleanAnalytics =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{c}\NormalTok{(}\StringTok{"analytics"}\NormalTok{, }\StringTok{"https"}\NormalTok{, }\StringTok{"thanks"}\NormalTok{, }\StringTok{"mention"}\NormalTok{, }\StringTok{"cubeyou"}\NormalTok{, }\StringTok{"according"}\NormalTok{))             }
+
+
+\CommentTok{#this is for AI }
+\CommentTok{#remove quotation marks}
+\NormalTok{AITweets[,}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{'"'}\NormalTok{,}\StringTok{""}\NormalTok{,AITweets[,}\DecValTok{1}\NormalTok{])}
+\CommentTok{#remove emoji's}
+\NormalTok{AITweets}\OperatorTok{$}\NormalTok{text =}\StringTok{ }\KeywordTok{sapply}\NormalTok{(AITweets}\OperatorTok{$}\NormalTok{text, }\ControlFlowTok{function}\NormalTok{(row) }\KeywordTok{iconv}\NormalTok{(row, }\StringTok{"latin1"}\NormalTok{, }\StringTok{"ASCII"}\NormalTok{, }\DataTypeTok{sub =} \StringTok{""}\NormalTok{)) }
+\CommentTok{#create character vector}
+\NormalTok{AITweets_text =}\StringTok{ }\KeywordTok{c}\NormalTok{(AITweets}\OperatorTok{$}\NormalTok{text)                                                          }
+\CommentTok{#create corpus}
+\NormalTok{tweets_corpus =}\StringTok{ }\KeywordTok{Corpus}\NormalTok{(}\KeywordTok{VectorSource}\NormalTok{(AITweets_text))                                          }
+\CommentTok{#remove punctuation}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus, removePunctuation)                                }
+\CommentTok{#only lower case}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, }\KeywordTok{content_transformer}\NormalTok{(tolower))                }
+\CommentTok{#remove english stopwords}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{stopwords}\NormalTok{(}\StringTok{"english"}\NormalTok{))           }
+\CommentTok{#remove numbers}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeNumbers)                               }
+\CommentTok{#remove unnecessary white space}
+\NormalTok{tweets_corpus_clean =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, stripWhitespace)                             }
+\CommentTok{#remove obvious or nonsensical words}
+\NormalTok{cleanAI =}\StringTok{ }\KeywordTok{tm_map}\NormalTok{(tweets_corpus_clean, removeWords, }\KeywordTok{c}\NormalTok{(}\StringTok{"facebook"}\NormalTok{, }\StringTok{"httpstcokrux"}\NormalTok{, }\StringTok{"intelligence"}\NormalTok{, }\StringTok{"artificial"}\NormalTok{, }\StringTok{"userexperienceu"}\NormalTok{, }\StringTok{"will"}\NormalTok{))             }
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{(a) Graphical Representation of the
+Tweets}\label{a-graphical-representation-of-the-tweets}
+
+In this section we make a word cloud of the tweets, to maintain
+readability only 50 words are displayed at the same time. In the
+\emph{blockchain} tweets we see that most tweets concern
+cryptocurrencies with words like \emph{cryptocurrency, crypto}
+(shorthand for many cryptocurrencies) and \emph{bitcoin}.
+
+The \emph{analytics} tweets we see a focus on data, facebook and
+academic research. Here one of the downsides of a word cloud comes in to
+play: we do not know when combinations of words are used (e.g.~are
+\emph{academic} and \emph{research} appearing independently or
+together). This can be bothersome when interpreting the results.
+
+The \emph{artificial intelligence} tweets show a more varied
+distribution of words. Again here we see words that are often used
+together such as \emph{machine learning}. In cases like these, having
+domain knowledge on the subject your analysing can help tremendously.
+Other words indicate that AI is an upcoming phenomenon, this is
+indicated by words like \emph{just, first, new} and \emph{opportunity}.
+
+Additionally we wanted to add a geographical analysis of which places
+which topics were talked about the most, but our method for collecting
+the tweets yielded us with missing values for the \emph{longitude} and
+\emph{latitude} variables, making this analysis impossible.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(wordcloud)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: RColorBrewer
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{wordcloud}\NormalTok{(cleanBlockchain, }\DataTypeTok{random.order =}\NormalTok{ F, }\DataTypeTok{max.words =} \DecValTok{50}\NormalTok{, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{), }\DataTypeTok{colors =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## weapon could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## vacation could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## httpstcocuaydfkl could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## lightings could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## httpstcognjzokzn could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in wordcloud(cleanBlockchain, random.order = F, max.words = 50, :
+## provider could not be fit on page. It will not be plotted.
+\end{verbatim}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/graphs-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{wordcloud}\NormalTok{(cleanAnalytics, }\DataTypeTok{random.order =}\NormalTok{ F, }\DataTypeTok{max.words =} \DecValTok{50}\NormalTok{, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{), }\DataTypeTok{colors =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/graphs-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{wordcloud}\NormalTok{(cleanAI, }\DataTypeTok{random.order =}\NormalTok{ F, }\DataTypeTok{max.words =} \DecValTok{50}\NormalTok{, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.5}\NormalTok{), }\DataTypeTok{colors =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/graphs-3.pdf}
+
+\subsection{(b) Three User Timelines}\label{b-three-user-timelines}
+
+In \textbf{Question 3, Part (a)} we found that several users were very
+present in discussing the topics we had selected. As they seem to be
+very active users we will be analysing their timelines. The users that
+we will investigate are \emph{cubeyou, userexperienceu} and
+\emph{bethereumteam}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#get the timelines}
+\NormalTok{cubeTimeline <-}\StringTok{ }\KeywordTok{userTimeline}\NormalTok{(}\StringTok{"cubeyou"}\NormalTok{)}
+\NormalTok{userexperienceTimeline <-}\StringTok{ }\KeywordTok{userTimeline}\NormalTok{(}\StringTok{"userexperienceu"}\NormalTok{)}
+\NormalTok{bethereumTimeline <-}\StringTok{ }\KeywordTok{userTimeline}\NormalTok{(}\StringTok{"bethereumteam"}\NormalTok{)}
+
+\CommentTok{#analyse the structure}
+\KeywordTok{str}\NormalTok{(cubeTimeline)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 19
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Our blogpost explains why the female travelers are https://t.co/xU3ZRIo8hp's key to winning the the travel game"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 4
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-10-30 19:12:31"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "925077977343422465"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/xU3ZRIo8hp" "https://t.co/xmuIadHp4b"
+##   .. ..$ expanded_url: chr [1:2] "http://Hotels.com" "https://twitter.com/i/web/status/925077977343422465"
+##   .. ..$ display_url : chr [1:2] "Hotels.com" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 51 114
+##   .. ..$ stop_index  : num [1:2] 74 137
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#NewBusiness opportunity; @hotelsdotcom recently launched a full review. Reserve your spot to win now https://t.co/atynDLSvla"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-10-26 13:44:40"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "923545919022358528"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/atynDLSvla"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/923545919022358528"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 103
+##   .. ..$ stop_index  : num 126
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Don't miss this week's post on why @PapaJohns should pay more attention to the movie-goers/gamers in their audi"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-10-19 18:26:51"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "921080217732513792"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 1
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/HlqTEb6vmB"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/921080217732513792"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#NewBusiness opportunity with @PapaJohns's! Get the insights now to win the place as their new agency partner!"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-10-11 18:40:48"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "918184625138294784"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/SCpya7p57s"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/918184625138294784"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 112
+##   .. ..$ stop_index  : num 135
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Check out this week's blogpost to find out how e-commerce giant @amazon can better target the digital shoppers!"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-10-05 19:08:27"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "916017258719318016"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/fvbTgMI25L"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/916017258719318016"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 113
+##   .. ..$ stop_index  : num 136
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Don't miss out! Click to get the insights you need to win the pitch for Amazon's global media agency review! h"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-09-27 18:22:57"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "913106704228864006"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/ee3OUAJEC9"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/913106704228864006"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 110
+##   .. ..$ stop_index  : num 133
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Find out how digital artists may be the perfect influencers for @lenovo to reach the millennials! https://t.co/L5tPgis9xL"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-09-21 18:25:43"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "910933071091953665"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/L5tPgis9xL"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/910933071091953665"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 99
+##   .. ..$ stop_index  : num 122
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Check out this week's #NBPA for some neat insights on how you can help @lenovo achieve a more cohesive PR strat"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-09-14 20:52:38"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "908433329824960514"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/OIeBVoFxKZ"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/908433329824960514"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Having a recognizable logo for your brand is super important! https://t.co/6aIJoW28Uo"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-09-08 13:37:51"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "906149586162651137"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/6aIJoW28Uo"
+##   .. ..$ expanded_url: chr "https://twitter.com/OfficialPartner/status/885977412923555840"
+##   .. ..$ display_url : chr "twitter.com/OfficialPartne"
+##   .. ..$ start_index : num 62
+##   .. ..$ stop_index  : num 85
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Great Philosophy! https://t.co/62jquBYdTN"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-09-08 13:35:37"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "906149025254080515"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/62jquBYdTN"
+##   .. ..$ expanded_url: chr "https://twitter.com/Ogilvy/status/906141029719531520"
+##   .. ..$ display_url : chr "twitter.com/Ogilvy/status/"
+##   .. ..$ start_index : num 18
+##   .. ..$ stop_index  : num 41
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Check out how @SUBWAY should be appealing to their target market: the Female Millennials https://t.co/lYTF182vK"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-08-30 18:03:15"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "902954886706470913"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/lYTF182vKb" "https://t.co/gyfIbTK1OZ"
+##   .. ..$ expanded_url: chr [1:2] "https://goo.gl/LDZsvc" "https://twitter.com/i/web/status/902954886706470913"
+##   .. ..$ display_url : chr [1:2] "goo.gl/LDZsvc" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 89 114
+##   .. ..$ stop_index  : num [1:2] 112 137
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@doner_agency @socialmediaweek @BuzzFeed @FOXSports @DollarShaveClub Sounds like it'll be a great time!"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr "doner_agency"
+##   ..$ created      : POSIXct[1:1], format: "2017-08-29 18:55:38"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "902596149051318272"
+##   ..$ id           : chr "902605680212930561"
+##   ..$ replyToUID   : chr "33891064"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@InitiativeWW Congrats!"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr "InitiativeWW"
+##   ..$ created      : POSIXct[1:1], format: "2017-08-29 18:52:27"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "902532084329312256"
+##   ..$ id           : chr "902604880682078208"
+##   ..$ replyToUID   : chr "289412131"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@nomadicagency congrats! looks awesome :)"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr "nomadicagency"
+##   ..$ created      : POSIXct[1:1], format: "2017-08-29 18:49:34"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "902263718188269569"
+##   ..$ id           : chr "902604152660000768"
+##   ..$ replyToUID   : chr "21445379"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Check out this week's #NPBA for a #NewBusiness opportunity with @SUBWAY! Find out how to help target #fillennia"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-08-24 18:52:51"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "900793040448651264"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/by4kIYUezV"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/900793040448651264"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 115
+##   .. ..$ stop_index  : num 138
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Click to learn why Gen Z is the new face of Snackers everywhere and how you can help @DietzandWatson reach them"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-08-16 17:59:28"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "897880503235350528"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/GMmc8lcW2x"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/897880503235350528"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/8"
+##   .. ..$ start_index : num 113
+##   .. ..$ stop_index  : num 136
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Powerful. https://t.co/rwwSWdRVYW"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2017-08-16 13:35:00"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "897813948040445953"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/rwwSWdRVYW"
+##   .. ..$ expanded_url: chr "https://twitter.com/texaslodestars/status/897451985686810624"
+##   .. ..$ display_url : chr "twitter.com/texaslodestars"
+##   .. ..$ start_index : num 10
+##   .. ..$ stop_index  : num 33
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@susanp_bvk @RoyalCaribbean just beautiful."
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr "susanp_bvk"
+##   ..$ created      : POSIXct[1:1], format: "2017-08-16 13:34:27"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "897640009955766273"
+##   ..$ id           : chr "897813810408542210"
+##   ..$ replyToUID   : chr "517859627"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@thinkargus amazing to watch!"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2
+##   ..$ replyToSN    : chr "thinkargus"
+##   ..$ created      : POSIXct[1:1], format: "2017-08-16 13:33:58"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "897453801153679360"
+##   ..$ id           : chr "897813690203942918"
+##   ..$ replyToUID   : chr "55557158"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "Cubeyou"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(userexperienceTimeline)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 20
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "An interview with a #User #Experience #Guru https://t.co/gWdsbQvhzd #Futurist #IoT #BlockChain #Agile #DevOps h"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 5
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-09 06:03:48"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983223937638240256"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 75
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/gWdsbQvhzd"
+##   .. ..$ expanded_url: chr "http://rviv.ly/3HIZK"
+##   .. ..$ display_url : chr "rviv.ly/3HIZK"
+##   .. ..$ start_index : num 44
+##   .. ..$ stop_index  : num 67
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Dependant on #dumb #data and is making #bad #choices? #Douglas #Adams https://t.co/dtdCOIiuOX #Futurist #IoT "| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 4
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-09 02:03:23"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983163435100852224"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 79
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/dtdCOIiuOX" "https://t.co/OUyZwOyvXR"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/1qUYS" "https://twitter.com/i/web/status/983163435100852224"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/1qUYS" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 71 111
+##   .. ..$ stop_index  : num [1:2] 94 134
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Information Architecture (IA) the #classification of #information https://t.co/niQbqhRR5r #Futurist #IoT http"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 10
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 22:03:14"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983102997088620544"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 143
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/niQbqhRR5r" "https://t.co/Vyr5sxBvJH"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/1tEUS" "https://twitter.com/i/web/status/983102997088620544"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/1tEUS" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 67 107
+##   .. ..$ stop_index  : num [1:2] 90 130
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Usable #security in investment banking and #wealth #management https://t.co/NhwzntBZDv #Futurist #IoT #BlockCh"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 18:03:06"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983042565078437888"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/NhwzntBZDv" "https://t.co/SnM7sZSoE8"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/1S6Px" "https://twitter.com/i/web/status/983042565078437888"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/1S6Px" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 64 116
+##   .. ..$ stop_index  : num [1:2] 87 139
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Social #Media Key Opinion Leaders #KOL #Huawei #MWC https://t.co/GMpuWHRBAu #Futurist #IoT #BlockChain #Agile"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 14:02:56"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982982124717436929"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/GMpuWHRBAu" "https://t.co/Nqkyj58qUm"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/1fI0F" "https://twitter.com/i/web/status/982982124717436929"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/1fI0F" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 53 112
+##   .. ..$ stop_index  : num [1:2] 76 135
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Paradigm Interactions R&amp;D company UbiNET issues two cryptocurrencies the #ThingCoin and #UbiNET-p-Token ht"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 10:01:28"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982921358073057281"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/E3AT4hD97X"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982921358073057281"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 109
+##   .. ..$ stop_index  : num 132
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Information #Architecture (IA) the #classification of #information Part 2 https://t.co/vWNkQn5csB #Futurist #I"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 38
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 05:59:36"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982860490568339456"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 532
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/vWNkQn5csB" "https://t.co/dgA0HUmeof"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/6BzmP" "https://twitter.com/i/web/status/982860490568339456"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/6BzmP" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 75 115
+##   .. ..$ stop_index  : num [1:2] 98 138
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Minimum #Viable #Experience #MVE because the viability in an #MVP is not #Customer #Centered https://t.co/kXfCAYrATs"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 30
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 01:57:38"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982799600250650624"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 562
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/kXfCAYrATs"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982799600250650624"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 95
+##   .. ..$ stop_index  : num 118
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Open #Networking #Ecosystem #Protocol #Patent https://t.co/VUpW9TYxlo #Futurist #IoT #BlockChain #Agile #DevOp"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 18
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 21:55:00"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982738539950563332"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 570
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/VUpW9TYxlo"
+##   .. ..$ expanded_url: chr "http://rviv.ly/0UrId"
+##   .. ..$ display_url : chr "rviv.ly/0UrId"
+##   .. ..$ start_index : num 47
+##   .. ..$ stop_index  : num 70
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#SmartLiving or as we might live with #artificial #intelligence and an open #IoT in a #new #reality https://t.co/bE2oXTewpf"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 37
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 20:56:36"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982361453641523200"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 743
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/bE2oXTewpf"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982361453641523200"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 101
+##   .. ..$ stop_index  : num 124
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#ubinetus has released 200 #UbiNETcToken https://t.co/h1ZBG2bHVW #Futurist #IoT #BlockChain #Agile #DevOps http"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 36
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 03:21:42"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982095978890080256"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1015
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/h1ZBG2bHVW"
+##   .. ..$ expanded_url: chr "http://rviv.ly/6GJHi"
+##   .. ..$ display_url : chr "rviv.ly/6GJHi"
+##   .. ..$ start_index : num 41
+##   .. ..$ stop_index  : num 64
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "An interview with a #User #Experience #Guru https://t.co/gWdsbQvhzd #Futurist #IoT #BlockChain #Agile #DevOps h"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 31
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 22:39:25"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982024941829787649"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1163
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/gWdsbQvhzd"
+##   .. ..$ expanded_url: chr "http://rviv.ly/3HIZK"
+##   .. ..$ display_url : chr "rviv.ly/3HIZK"
+##   .. ..$ start_index : num 44
+##   .. ..$ stop_index  : num 67
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Strategic and #lean #thinking in private investment and asset portfolio participants part 2 https://t.co/dFiHsos8Rj"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 18:39:12"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981964487451447297"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/dFiHsos8Rj"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/981964487451447297"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 94
+##   .. ..$ stop_index  : num 117
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Do #eCommerce #analytics prove #customer #affiliation? https://t.co/kULp6zxkvv #Futurist #IoT #BlockChain #Agil"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 14:39:05"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981904058763137024"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/kULp6zxkvv" "https://t.co/OIG6NwjxK4"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/0Y4XL" "https://twitter.com/i/web/status/981904058763137024"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/0Y4XL" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 55 114
+##   .. ..$ stop_index  : num [1:2] 78 137
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Digital #Transformation is #About #People https://t.co/zdPEmKNgIo #Futurist #IoT #BlockChain #Agile #DevOps ht"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 10:38:55"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981843620532817920"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/zdPEmKNgIo"
+##   .. ..$ expanded_url: chr "http://rviv.ly/164l3"
+##   .. ..$ display_url : chr "rviv.ly/164l3"
+##   .. ..$ start_index : num 43
+##   .. ..$ stop_index  : num 66
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#IoT People in #London https://t.co/gcjqouaRfj #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/eU98HLB5y6"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 38
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 06:38:44"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981783175641870337"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1494
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/gcjqouaRfj"
+##   .. ..$ expanded_url: chr "http://rviv.ly/3VFrI"
+##   .. ..$ display_url : chr "rviv.ly/3VFrI"
+##   .. ..$ start_index : num 23
+##   .. ..$ stop_index  : num 46
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "UbiNET Platform from UbiNET Inc. with cryptocurrency and blockchain 2018 asset sale https://t.co/e7lMapPklt ht"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 22
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 02:38:19"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981722673934946304"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1339
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/e7lMapPklt" "https://t.co/sU04Cg5TqM"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/7xR8u" "https://twitter.com/i/web/status/981722673934946304"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/7xR8u" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 84 109
+##   .. ..$ stop_index  : num [1:2] 107 132
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Interview with a #User #Experience #Guru part 2 https://t.co/gmupD3YdQc #Futurist #IoT #BlockChain #Agile #DevO"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 24
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-04 22:37:59"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981662191488249856"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 1168
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/gmupD3YdQc"
+##   .. ..$ expanded_url: chr "http://rviv.ly/3zgYs"
+##   .. ..$ display_url : chr "rviv.ly/3zgYs"
+##   .. ..$ start_index : num 48
+##   .. ..$ stop_index  : num 71
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Agile #User #stories is a #UX #method https://t.co/g4tuwmL1Ht #Futurist #IoT #BlockChain #Agile #DevOps https:"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-04 18:37:46"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981601740175958016"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/g4tuwmL1Ht"
+##   .. ..$ expanded_url: chr "http://rviv.ly/1WIZE"
+##   .. ..$ display_url : chr "rviv.ly/1WIZE"
+##   .. ..$ start_index : num 39
+##   .. ..$ stop_index  : num 62
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#Situational #awareness drives open #IoT #Ecosystems not #visual #interfaces https://t.co/I72FhXXWAk #Futurist "| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 0
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-04 14:37:27"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981541261776687105"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://www.ajaymatharu.com/\" rel=\"nofollow\">Tweet Old Post</a>"
+##   ..$ screenName   : chr "UserExperienceU"
+##   ..$ retweetCount : num 0
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/I72FhXXWAk" "https://t.co/C1yKmnf88N"
+##   .. ..$ expanded_url: chr [1:2] "http://rviv.ly/0ETHi" "https://twitter.com/i/web/status/981541261776687105"
+##   .. ..$ display_url : chr [1:2] "rviv.ly/0ETHi" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 77 117
+##   .. ..$ stop_index  : num [1:2] 100 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(bethereumTimeline)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 19
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Our #communities are almost at 6-digit numbers! <ed><U+00A0><U+00BD><ed><U+00B2><U+00AC>\nJoin them: https://t."| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 182
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-10 01:09:30"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983512263280734208"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 152
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/n5XxTqJJSL" "https://t.co/4GllRSTe7j"
+##   .. ..$ expanded_url: chr [1:2] "http://t.me/bethereum" "https://twitter.com/i/web/status/983512263280734208"
+##   .. ..$ display_url : chr [1:2] "t.me/bethereum" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 61 115
+##   .. ..$ stop_index  : num [1:2] 84 138
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Have you already registered on https://t.co/VupC9N9Dcm?\nOur public #presale is starting soon! <U+23F1><U+FE0F>"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 761
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-09 16:59:06"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983388847462666240"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 668
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/VupC9N9Dcm" "https://t.co/97RADv326W"
+##   .. ..$ expanded_url: chr [1:2] "http://bethereum.com" "https://twitter.com/i/web/status/983388847462666240"
+##   .. ..$ display_url : chr [1:2] "bethereum.com" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 31 115
+##   .. ..$ stop_index  : num [1:2] 54 138
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "1 #ETH = 17 500 #BTHR tokens (without #bonus). <ed><U+00A0><U+00BE><ed><U+00B4><U+00A9>\nLearn more: https://t."| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1164
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-09 12:54:57"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983327406093193216"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 976
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    2 obs. of  5 variables:
+##   .. ..$ url         : chr [1:2] "https://t.co/EfoYf4bKw1" "https://t.co/kOaLnKlvBD"
+##   .. ..$ expanded_url: chr [1:2] "http://bethereum.com/#tokensale" "https://twitter.com/i/web/status/983327406093193216"
+##   .. ..$ display_url : chr [1:2] "bethereum.com/#tokensale" "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num [1:2] 61 114
+##   .. ..$ stop_index  : num [1:2] 84 137
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Got your #ETH ready? In our public #presale, we aren't limiting anyone! <ed><U+00A0><U+00BD><ed><U+00BA><U+0080"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1821
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-09 01:14:56"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983151241541902336"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1552
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/lI0ZvNNZmE"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/983151241541902336"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 110
+##   .. ..$ stop_index  : num 133
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@Marinewan It will be announced just before the presale :) stay tuned!!"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 100
+##   ..$ replyToSN    : chr "Marinewan"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 22:48:35"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "983089747697418242"
+##   ..$ id           : chr "983114410398027776"
+##   ..$ replyToUID   : chr "66112119"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 81
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "It's finally here - the #Bethereum public #presale will start in 3 days!\nRegister now to get notified by email"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 1964
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 20:20:59"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "983077267646697475"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1669
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/12IEOo3c0U"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/983077267646697475"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 113
+##   .. ..$ stop_index  : num 136
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Betting has an inherent social aspect, yet most online betting is impersonal. \nWe want to change that! Read mo"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2014
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-08 08:35:58"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982899843331952640"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1734
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/PHeJ6B4dbb"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982899843331952640"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 115
+##   .. ..$ stop_index  : num 138
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Have you wondered why the #BTHR token is a perfect fit for the #blockchain? \nRead about it here: https://t.co/l0QZKKC0dL"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2145
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 22:05:43"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982741236955209729"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1819
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/l0QZKKC0dL"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982741236955209729"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 98
+##   .. ..$ stop_index  : num 121
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@DrJamesJamieso1 Thanks for your support James ;)"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 99
+##   ..$ replyToSN    : chr "DrJamesJamieso1"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 18:02:59"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "982402644294582272"
+##   ..$ id           : chr "982680149194887168"
+##   ..$ replyToUID   : chr "949893679094808576"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 70
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@bitwitch08 No minimum in the public presale starting on 11th of April :)"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 95
+##   ..$ replyToSN    : chr "bitwitch08"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 18:02:42"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "982309720408010752"
+##   ..$ id           : chr "982680078508331009"
+##   ..$ replyToUID   : chr "605620716"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 74
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@EEliwan Thanks for your help :)"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 95
+##   ..$ replyToSN    : chr "EEliwan"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 18:02:23"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "982384663263096832"
+##   ..$ id           : chr "982679999139414016"
+##   ..$ replyToUID   : chr "43819838"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 68
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "As you can tell we're very proud of our ratings! <ed><U+00A0><U+00BE><ed><U+00B4><U+00A9>\nThese are the latest"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2130
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-07 17:04:16"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982665373672755202"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1834
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/qGSFlFzpmY"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982665373672755202"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "#eSports are in our roadmap for the Q1 of 2019! <ed><U+00A0><U+00BC><ed><U+00BE><U+00AE>\nThey are among the fa"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2306
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 21:24:48"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982368550466793472"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 1968
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/eVMGY8i85U"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982368550466793472"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@junieeegasm 1 ETH = 17 500 BTHR + bonus :)"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 126
+##   ..$ replyToSN    : chr "junieeegasm"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 17:00:25"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "982289350950973440"
+##   ..$ id           : chr "982302013856731137"
+##   ..$ replyToUID   : chr "1235495462"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 95
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@EscapeThisHelll There are multiple ways of buying ETH, for instance you can also use a Bitcoin/ETH ATM machine"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 139
+##   ..$ replyToSN    : chr "EscapeThisHelll"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 15:00:20"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr "982239430009237506"
+##   ..$ id           : chr "982271794399739906"
+##   ..$ replyToUID   : chr "2744897640"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 106
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/0vz2iQqByz"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982271794399739906"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "The public #presale is coming up in less than a week!\nWant to contribute and don't have an #ETH wallet yet? <e"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2360
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-06 12:32:45"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982234657000312833"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 2013
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/H1zft1IQsk"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982234657000312833"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "@Jean_Jaki @BEthereum Will be announced ;) we're already thinking of a few locations!"
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 124
+##   ..$ replyToSN    : chr "Jean_Jaki"
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 21:49:42"
+##   ..$ truncated    : logi FALSE
+##   ..$ replyToSID   : chr "982009830020968448"
+##   ..$ id           : chr "982012430065852418"
+##   ..$ replyToUID   : chr "2289507013"
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 92
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    0 obs. of  4 variables:
+##   .. ..$ url         : chr(0) 
+##   .. ..$ expanded_url: chr(0) 
+##   .. ..$ dispaly_url : chr(0) 
+##   .. ..$ indices     : num(0) 
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "Another snapshot of our local #Blockchain meet-up.\nCan't wait to meet more of our global supporters after the"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2475
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 21:32:53"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "982008197568454659"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 2095
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/j7VPnPR1O0"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/982008197568454659"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 111
+##   .. ..$ stop_index  : num 134
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+##  $ :Reference class 'status' [package "twitteR"] with 17 fields
+##   ..$ text         : chr "BREAKING NEWS:\n@HackedCom one of the most prestigious #ICO analysis sites just gave us their HIGHEST rating! <"| __truncated__
+##   ..$ favorited    : logi FALSE
+##   ..$ favoriteCount: num 2762
+##   ..$ replyToSN    : chr(0) 
+##   ..$ created      : POSIXct[1:1], format: "2018-04-05 15:41:35"
+##   ..$ truncated    : logi TRUE
+##   ..$ replyToSID   : chr(0) 
+##   ..$ id           : chr "981919789269516289"
+##   ..$ replyToUID   : chr(0) 
+##   ..$ statusSource : chr "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"
+##   ..$ screenName   : chr "bethereumteam"
+##   ..$ retweetCount : num 2405
+##   ..$ isRetweet    : logi FALSE
+##   ..$ retweeted    : logi FALSE
+##   ..$ longitude    : chr(0) 
+##   ..$ latitude     : chr(0) 
+##   ..$ urls         :'data.frame':    1 obs. of  5 variables:
+##   .. ..$ url         : chr "https://t.co/CO16zkl4Pm"
+##   .. ..$ expanded_url: chr "https://twitter.com/i/web/status/981919789269516289"
+##   .. ..$ display_url : chr "twitter.com/i/web/status/9"
+##   .. ..$ start_index : num 117
+##   .. ..$ stop_index  : num 140
+##   ..and 53 methods, of which 39 are  possibly relevant:
+##   ..  getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
+##   ..  getLatitude, getLongitude, getReplyToSID, getReplyToSN,
+##   ..  getReplyToUID, getRetweetCount, getRetweeted, getRetweeters,
+##   ..  getRetweets, getScreenName, getStatusSource, getText, getTruncated,
+##   ..  getUrls, initialize, setCreated, setFavoriteCount, setFavorited,
+##   ..  setId, setIsRetweet, setLatitude, setLongitude, setReplyToSID,
+##   ..  setReplyToSN, setReplyToUID, setRetweetCount, setRetweeted,
+##   ..  setScreenName, setStatusSource, setText, setTruncated, setUrls,
+##   ..  toDataFrame, toDataFrame#twitterObj
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#put them into a data frame}
+\NormalTok{dfcube <-}\StringTok{ }\KeywordTok{twListToDF}\NormalTok{(cubeTimeline)}
+\NormalTok{dfuser <-}\StringTok{ }\KeywordTok{twListToDF}\NormalTok{(userexperienceTimeline)}
+\NormalTok{dfbethereum <-}\StringTok{ }\KeywordTok{twListToDF}\NormalTok{(bethereumTimeline)}
+
+\CommentTok{#show all the tweets for all 3 users}
+\NormalTok{dfcube}\OperatorTok{$}\NormalTok{text}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Our blogpost explains why the female travelers are https://t.co/xU3ZRIo8hp's key to winning the the travel game. https://t.co/xmuIadHp4b"   
+##  [2] "#NewBusiness opportunity; @hotelsdotcom recently launched a full review. Reserve your spot to win now https://t.co/atynDLSvla"              
+##  [3] "Don't miss this week's post on why @PapaJohns should pay more attention to the movie-goers/gamers in their audience https://t.co/HlqTEb6vmB"
+##  [4] "#NewBusiness opportunity with @PapaJohns's! Get the insights now to win the place as their new agency partner! https://t.co/SCpya7p57s"     
+##  [5] "Check out this week's blogpost to find out how e-commerce giant @amazon can better target the digital shoppers! https://t.co/fvbTgMI25L"    
+##  [6] "Don't miss out! Click to get the insights you need to win the pitch for Amazon's global media agency review! https://t.co/ee3OUAJEC9"       
+##  [7] "Find out how digital artists may be the perfect influencers for @lenovo to reach the millennials! https://t.co/L5tPgis9xL"                  
+##  [8] "Check out this week's #NBPA for some neat insights on how you can help @lenovo achieve a more cohesive PR strategy! https://t.co/OIeBVoFxKZ"
+##  [9] "Having a recognizable logo for your brand is super important! https://t.co/6aIJoW28Uo"                                                       
+## [10] "Great Philosophy! https://t.co/62jquBYdTN"                                                                                                   
+## [11] "Check out how @SUBWAY should be appealing to their target market: the Female Millennials https://t.co/lYTF182vKb https://t.co/gyfIbTK1OZ"   
+## [12] "@doner_agency @socialmediaweek @BuzzFeed @FOXSports @DollarShaveClub Sounds like it'll be a great time!"                                     
+## [13] "@InitiativeWW Congrats!"                                                                                                                     
+## [14] "@nomadicagency congrats! looks awesome :)"                                                                                                   
+## [15] "Check out this week's #NPBA for a #NewBusiness opportunity with @SUBWAY! Find out how to help target #fillennials https://t.co/by4kIYUezV"  
+## [16] "Click to learn why Gen Z is the new face of Snackers everywhere and how you can help @DietzandWatson reach them https://t.co/GMmc8lcW2x"    
+## [17] "Powerful. https://t.co/rwwSWdRVYW"                                                                                                           
+## [18] "@susanp_bvk @RoyalCaribbean just beautiful."                                                                                                 
+## [19] "@thinkargus amazing to watch!"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dfuser}\OperatorTok{$}\NormalTok{text}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "An interview with a #User #Experience #Guru https://t.co/gWdsbQvhzd #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/q9b0Zmn9L1"       
+##  [2] "#Dependant on #dumb #data and is making #bad #choices? #Douglas #Adams https://t.co/dtdCOIiuOX #Futurist #IoT https://t.co/OUyZwOyvXR"      
+##  [3] "#Information Architecture (IA) the #classification of #information https://t.co/niQbqhRR5r #Futurist #IoT https://t.co/Vyr5sxBvJH"          
+##  [4] "#Usable #security in investment banking and #wealth #management https://t.co/NhwzntBZDv #Futurist #IoT #BlockChain https://t.co/SnM7sZSoE8" 
+##  [5] "#Social #Media Key Opinion Leaders #KOL #Huawei #MWC https://t.co/GMpuWHRBAu #Futurist #IoT #BlockChain #Agile https://t.co/Nqkyj58qUm"     
+##  [6] "Paradigm Interactions R&amp;D company UbiNET issues two cryptocurrencies the #ThingCoin and #UbiNET-p-Token https://t.co/E3AT4hD97X"        
+##  [7] "#Information #Architecture (IA) the #classification of #information Part 2 https://t.co/vWNkQn5csB #Futurist #IoT https://t.co/dgA0HUmeof"  
+##  [8] "#Minimum #Viable #Experience #MVE because the viability in an #MVP is not #Customer #Centered https://t.co/kXfCAYrATs"                      
+##  [9] "#Open #Networking #Ecosystem #Protocol #Patent https://t.co/VUpW9TYxlo #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/dcBfNXUtz1"    
+## [10] "#SmartLiving or as we might live with #artificial #intelligence and an open #IoT in a #new #reality https://t.co/bE2oXTewpf"                
+## [11] "#ubinetus has released 200 #UbiNETcToken https://t.co/h1ZBG2bHVW #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/JNmKgh8wOL"          
+## [12] "An interview with a #User #Experience #Guru https://t.co/gWdsbQvhzd #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/Rxf3NGNN9Y"       
+## [13] "#Strategic and #lean #thinking in private investment and asset portfolio participants part 2 https://t.co/dFiHsos8Rj"                       
+## [14] "Do #eCommerce #analytics prove #customer #affiliation? https://t.co/kULp6zxkvv #Futurist #IoT #BlockChain #Agile https://t.co/OIG6NwjxK4"   
+## [15] "#Digital #Transformation is #About #People https://t.co/zdPEmKNgIo #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/33IudSrYLH"        
+## [16] "#IoT People in #London https://t.co/gcjqouaRfj #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/eU98HLB5y6"                            
+## [17] "UbiNET Platform from UbiNET Inc. with cryptocurrency and blockchain 2018 asset sale https://t.co/e7lMapPklt https://t.co/sU04Cg5TqM"        
+## [18] "Interview with a #User #Experience #Guru part 2 https://t.co/gmupD3YdQc #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/SwGSpYVilw"   
+## [19] "#Agile #User #stories is a #UX #method https://t.co/g4tuwmL1Ht #Futurist #IoT #BlockChain #Agile #DevOps https://t.co/KKenhJt4on"            
+## [20] "#Situational #awareness drives open #IoT #Ecosystems not #visual #interfaces https://t.co/I72FhXXWAk #Futurist #IoT https://t.co/C1yKmnf88N"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dfbethereum}\OperatorTok{$}\NormalTok{text}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Our #communities are almost at 6-digit numbers! <ed><U+00A0><U+00BD><ed><U+00B2><U+00AC>\nJoin them: https://t.co/n5XxTqJJSL\n#Crypto #cryptocurrency #ICO https://t.co/4GllRSTe7j"
+##  [2] "Have you already registered on https://t.co/VupC9N9Dcm?\nOur public #presale is starting soon! <U+23F1><U+FE0F>\n#Crypto #Bitcoin https://t.co/97RADv326W"    
+##  [3] "1 #ETH = 17 500 #BTHR tokens (without #bonus). <ed><U+00A0><U+00BE><ed><U+00B4><U+00A9>\nLearn more: https://t.co/EfoYf4bKw1\n#TokenSale #presale #preICO https://t.co/kOaLnKlvBD"
+##  [4] "Got your #ETH ready? In our public #presale, we aren't limiting anyone! <ed><U+00A0><U+00BD><ed><U+00BA><U+0080>\nRegister to get notified by email: https://t.co/lI0ZvNNZmE"
+##  [5] "@Marinewan It will be announced just before the presale :) stay tuned!!"                                                                                       
+##  [6] "It's finally here - the #Bethereum public #presale will start in 3 days!\nRegister now to get notified by email: https://t.co/12IEOo3c0U"                     
+##  [7] "Betting has an inherent social aspect, yet most online betting is impersonal. \nWe want to change that! Read more: https://t.co/PHeJ6B4dbb"                   
+##  [8] "Have you wondered why the #BTHR token is a perfect fit for the #blockchain? \nRead about it here: https://t.co/l0QZKKC0dL"                                    
+##  [9] "@DrJamesJamieso1 Thanks for your support James ;)"                                                                                                             
+## [10] "@bitwitch08 No minimum in the public presale starting on 11th of April :)"                                                                                     
+## [11] "@EEliwan Thanks for your help :)"                                                                                                                              
+## [12] "As you can tell we're very proud of our ratings! <ed><U+00A0><U+00BE><ed><U+00B4><U+00A9>\nThese are the latest verdicts of the most prestigious #ICO ratin https://t.co/qGSFlFzpmY"
+## [13] "#eSports are in our roadmap for the Q1 of 2019! <ed><U+00A0><U+00BC><ed><U+00BE><U+00AE>\nThey are among the fastest growing and largest markets in the wor https://t.co/eVMGY8i85U"
+## [14] "@junieeegasm 1 ETH = 17 500 BTHR + bonus :)"                                                                                                                   
+## [15] "@EscapeThisHelll There are multiple ways of buying ETH, for instance you can also use a Bitcoin/ETH ATM machine. Th https://t.co/0vz2iQqByz"                  
+## [16] "The public #presale is coming up in less than a week!\nWant to contribute and don't have an #ETH wallet yet? <ed><U+00A0><U+00BC><ed><U+00B6><U+0098>\nCheck https://t.co/H1zft1IQsk"
+## [17] "@Jean_Jaki @BEthereum Will be announced ;) we're already thinking of a few locations!"                                                                         
+## [18] "Another snapshot of our local #Blockchain meet-up.\nCan't wait to meet more of our global supporters after the https://t.co/j7VPnPR1O0"                       
+## [19] "BREAKING NEWS:\n@HackedCom one of the most prestigious #ICO analysis sites just gave us their HIGHEST rating! <ed><U+00A0><U+00BE><ed><U+00B5><U+0087>\nThey https://t.co/CO16zkl4Pm"
+\end{verbatim}
+
+\section{Question 4}\label{question-4}
+
+\subsection{(a) Cluster the Songs}\label{a-cluster-the-songs}
+
+As a first step, we install all necessary packages in R. Subsequently we
+import the data set and remove the first column. This column is simply
+an index variable which is redundant as each row already has an index in
+R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(cluster)}
+\KeywordTok{library}\NormalTok{(class)  }
+\KeywordTok{library}\NormalTok{(C50)}
+\KeywordTok{library}\NormalTok{(rpart)}
+\KeywordTok{library}\NormalTok{(rpart.plot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Loading Data & removing fist row (index variable)}
+\KeywordTok{library}\NormalTok{(readr)}
+\NormalTok{spotify <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"spotify.csv"}\NormalTok{, }\DataTypeTok{col_types =} \KeywordTok{cols}\NormalTok{(}\DataTypeTok{X1 =} \KeywordTok{col_skip}\NormalTok{()))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X1' [1]
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{spotify <-}\StringTok{ }\NormalTok{spotify[}\KeywordTok{complete.cases}\NormalTok{(spotify),]}
+\end{Highlighting}
+\end{Shaded}
+
+After loading the data, we inspect it and find that there are no missing
+values.
+
+Since we are going to perform K means clustering, we are only going to
+use the numerical variables in this data set. To prevent
+skewed/imbalanced data to impact the model, these numerical variables
+have to be scaled. The variables \emph{key, mode, timesignature} and
+\emph{target} are integer variables but will not be used in this model
+as these are categorical variables according to Spotify (2018).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Scaling all numerical variables}
+\NormalTok{spotify_num <-}\StringTok{ }\NormalTok{spotify[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{ ,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{13}\NormalTok{)] }
+\NormalTok{spotify_scaled <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(spotify_num)}
+\NormalTok{df_spotify_scaled <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(spotify_scaled) }
+\end{Highlighting}
+\end{Shaded}
+
+With K-means clustering, a number of clusters K has to be set
+arbitrarily. We are going to iteratively select K clusters and inspect
+the results using Principal Component Analysis. This method plots
+observations together on their scores on the two ``most important''
+variables: the principal components. These are defined as the variables
+which explain the most variance in the data set. We initially start by
+selecting 4 clusters:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Find cluster solution, K = 4}
+\NormalTok{rsltKmeans <-}\StringTok{ }\KeywordTok{kmeans}\NormalTok{(df_spotify_scaled, }\DecValTok{4}\NormalTok{) }
+\CommentTok{# Cluster Plot against 1st 2 principal components}
+\KeywordTok{clusplot}\NormalTok{(df_spotify_scaled, rsltKmeans}\OperatorTok{$}\NormalTok{cluster, }
+         \DataTypeTok{color=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{shade=}\OtherTok{TRUE}\NormalTok{, }
+         \DataTypeTok{labels=}\DecValTok{4}\NormalTok{, }\DataTypeTok{lines=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/4clusters-1.pdf}
+
+This first plot shows that the 2 selected components explain almost
+42.67\% of the point variability in the data set. The selected 4
+clusters seems to fit the data not very well as there is significant
+overlap between the clusters. For this reason we retry with 3 and 2
+clusters:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Find cluster solution, K = 3}
+\NormalTok{rsltKmeans <-}\StringTok{ }\KeywordTok{kmeans}\NormalTok{(df_spotify_scaled, }\DecValTok{3}\NormalTok{) }
+\CommentTok{# Cluster Plot against 1st 2 principal components}
+\KeywordTok{clusplot}\NormalTok{(df_spotify_scaled, rsltKmeans}\OperatorTok{$}\NormalTok{cluster, }
+         \DataTypeTok{color=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{shade=}\OtherTok{TRUE}\NormalTok{, }
+         \DataTypeTok{labels=}\DecValTok{4}\NormalTok{, }\DataTypeTok{lines=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/3/2clusters-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Find cluster solution, K = 2}
+\NormalTok{rsltKmeans <-}\StringTok{ }\KeywordTok{kmeans}\NormalTok{(df_spotify_scaled, }\DecValTok{2}\NormalTok{) }
+\CommentTok{# Cluster Plot against 1st 2 principal components}
+\KeywordTok{clusplot}\NormalTok{(df_spotify_scaled, rsltKmeans}\OperatorTok{$}\NormalTok{cluster, }
+         \DataTypeTok{color=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{shade=}\OtherTok{TRUE}\NormalTok{, }
+         \DataTypeTok{labels=}\DecValTok{4}\NormalTok{, }\DataTypeTok{lines=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/3/2clusters-2.pdf}
+
+Due to the little overlap in the K = 2 graph, we believe that 2 clusters
+will fit this data set the best. Although using 3 clusters already
+improved the clarity of the plot compared to K = 4, there is still quite
+some overlapping sections present.
+
+To strengthen our conclusion that we should use 2 clusters we also plot
+the within cluster variation (WSS) for a variety of clusters sizes
+(Elbow Method):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The wss variables is initialised }
+\NormalTok{wss <-}\StringTok{ }\NormalTok{(}\KeywordTok{nrow}\NormalTok{(df_spotify_scaled)}\OperatorTok{-}\DecValTok{1}\NormalTok{)}\OperatorTok{*}\KeywordTok{sum}\NormalTok{(}\KeywordTok{apply}\NormalTok{(df_spotify_scaled,}\DecValTok{2}\NormalTok{,var))}
+\CommentTok{# This for loop iterates the number of K clusters from 2 untill 15}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{2}\OperatorTok{:}\DecValTok{15}\NormalTok{) wss[i] <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{kmeans}\NormalTok{(df_spotify_scaled,}
+                                     \DataTypeTok{centers=}\NormalTok{i)}\OperatorTok{$}\NormalTok{withinss)}
+\CommentTok{# Plotting the graph}
+\KeywordTok{plot}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{, wss, }\DataTypeTok{type=}\StringTok{"b"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"Number of Clusters"}\NormalTok{,}
+     \DataTypeTok{ylab=}\StringTok{"Within groups sum of squares"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/elbow-1.pdf}
+
+A steep decrease in the plot indicates the right number of clusters as
+extra clusters decrease a significant amount of the variation. The
+steepest decrease can clearly be found for 2 clusters. However, this
+method is often considered inaccurate, and thus only serves to reinforce
+our decision made above.
+
+\subsection{(b) Explaining the
+Clusters.}\label{b-explaining-the-clusters.}
+
+To explain the different clusters we have build a decision tree model
+which predicts cluster membership. The final tree model has been
+developed after iterating various combinations of independent variables
+to the model. All variables which were not used in the decision tree (as
+they apparently did not add any information gain) have been excluded
+from the final model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Ensuring that clusters are set to 2.}
+\NormalTok{rsltKmeans <-}\StringTok{ }\KeywordTok{kmeans}\NormalTok{(df_spotify_scaled, }\DecValTok{2}\NormalTok{) }
+\CommentTok{# Add the cluster values to the original data set (the target variable)}
+\NormalTok{spotify <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(spotify, }\DataTypeTok{cluster=}\KeywordTok{as.factor}\NormalTok{(rsltKmeans}\OperatorTok{$}\NormalTok{cluster))}
+\CommentTok{# A decision tree model to explain Cluster memberships}
+\NormalTok{mdlTree <-}\StringTok{ }\NormalTok{cluster }\OperatorTok{~}\StringTok{ }\NormalTok{loudness }\OperatorTok{+}\StringTok{ }\NormalTok{instrumentalness }\OperatorTok{+}\StringTok{ }\NormalTok{danceability }\OperatorTok{+}\StringTok{ }\NormalTok{energy }\OperatorTok{+}\StringTok{ }\NormalTok{liveness }\OperatorTok{+}\StringTok{ }\NormalTok{loudness}
+\NormalTok{rsltTree <-}\KeywordTok{rpart}\NormalTok{(mdlTree, }
+                 \DataTypeTok{data =}\NormalTok{ spotify,}
+                 \DataTypeTok{method =} \StringTok{"class"}\NormalTok{, }
+                 \DataTypeTok{parms=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{split=}\StringTok{"information"}\NormalTok{))}
+\CommentTok{# Plot the decision tree}
+\KeywordTok{rpart.plot}\NormalTok{(rsltTree, }
+           \DataTypeTok{box.col=} \KeywordTok{c}\NormalTok{(}\StringTok{"grey"}\NormalTok{,}\StringTok{"green"}\NormalTok{,}\StringTok{"grey"}\NormalTok{)[rsltTree}\OperatorTok{$}\NormalTok{frame}\OperatorTok{$}\NormalTok{yval], }
+           \DataTypeTok{extra =} \DecValTok{102}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment_3_-_rest_files/figure-latex/tree-1.pdf}
+
+To explain what songs are in which cluster, we follow the plotted
+decision tree top-down. It can instantly be noted that the energy
+variable provides significant information gain as it's used multiple
+times throughout the model. Songs in cluster 1 have high values for
+energy whereas songs in cluster 2 have significantly lower values.
+According to Spotify (2018), songs with higher values fore energy feel
+``fast, loud and noisy like death metal music while a Bach prelude
+scores low on the scale''.
+
+Music in cluster 2 is also found less `danceable' according to the
+decision model. This can be expected as the danceability variable
+measures similar aspects as the energy variable such as tempo and beat
+strength. Thus songs in cluster 1 are more upbeat and danceable. Given
+the relative sizes of both clusters one could assume that songs from
+cluster 1 are the more mainstream, popular songs, whereas songs in
+cluster 2 might be songs of a more `niche' genre like classical music.
+
+Finally, the instrumentalness variable is used for multiple splits in
+the tree model but these are not easily interpreted as they are used in
+the lower areas of the model. To understand this variable, it is useful
+to know what the values represents. According to Spotify (2018), ``the
+closer the instrumentalness value is to 1.0, the greater likelihood the
+track contains no vocal content. Values above 0.5 are intended to
+represent instrumental tracks''. Not all splits of instrumentalness
+indicate the same direction (for two splits a lower value leads to
+cluster 1 whereas for 1 split a lower value leads to cluster 2. For this
+reason we argue that it is not directly possible to characterize
+clusters 1 and 2 based on this variable and we stick to using energy and
+danceability.
+
+\section{References}\label{references}
+
+Spotify, (2018) Get Audio Features for a Track
+\url{https://developer.spotify.com/web-api/get-audio-features/}
+
+
+\end{document}

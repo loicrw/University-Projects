@@ -1,0 +1,54 @@
+---
+title: "Weekly Assignment 5"
+author: "Loïc Roldán Waals  & Kimberly Cheng"
+date: "Wednesday 25 April, 2018"
+output:
+  html_document:
+    pdf_print: paged
+  toc: TRUE
+  pdf_document: default
+---
+
+##Q1
+
+**Using a database with at least 200 selected tweets from previous weekly assignments, clean up your data set and build a term frequency matrix.**
+
+```{r}
+
+```
+
+**(a)Cluster the resulting documents using the k-means algorithm with a suitable distance metric. Explain in plain text the information potentially encoded in each cluster. Tip: you can use decision trees to help you with this task.**
+
+```{r}
+
+```
+
+**(b) Manually label all the tweets in your data set as positive (label = 1), negative (label = -1), and neutral (label = 0). Thereafter, using 10-fold cross validation, report the overall accuracy of a Naive Bayes model when predicting the target (labels). Tip: you might (or might not) have to reduce the sparsity of the term frequency matrix to get higher accuracy.**
+
+```{r}
+
+```
+
+##Q2
+
+**Collect the news from News API about Volkswagen, Toyota, Honda, BMW, Mercedes-Benz, Ford, Volvo, and Tesla over the past 150 days.**
+
+```{r}
+
+```
+
+**(a) Use the difference between the number of positive and negative words as the definition of sentiment. Which company has more positive news? Plot a boxplot with the resulting scores.**
+
+```{r}
+
+```
+
+
+**(b) Manually label all the news in your data set as positive (label = 1), negative (label = -1), and neutral (label = 0). Thereafter, using 10-fold cross validation, compare the accuracy of a Naive Bayes model against a SVM model when predicting the target (labels). Tip: you might (or might not) have to implicitly select variables by reducing the sparsity of the term frequency matrix in order to speed up the learning process.**
+
+```{r}
+
+```
+
+
+

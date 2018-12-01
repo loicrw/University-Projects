@@ -1,0 +1,563 @@
+---
+title: "Weekly Assignment 5"
+author: "Loïc Roldán Waals  & Kimberly Cheng"
+date: "Wednesday 25 April, 2018"
+output:
+  html_document:
+    pdf_print: paged
+  toc: TRUE
+  pdf_document: default
+---
+
+##Q1
+
+**Using a database with at least 200 selected tweets from previous weekly assignments, clean up your data set and build a term frequency matrix.**
+
+```{r message = FALSE, warning = FALSE}
+#--------------------------------------
+# Load Relevant Packages
+#--------------------------------------
+
+library(stringr)
+library(tm)
+library(data.table)
+
+
+# Import Selected Tweets form Previous Weekly Assignments
+AITweets <- read_delim("AITweets.csv", ";",
+                       escape_double = FALSE,
+                       trim_ws = TRUE)
+
+AITweets$text <- as.character(AITweets$text)
+
+# Make Data Available for 
+AITweets <- as.list(AITweets)
+vecData  <- VectorSource(AITweets$text)
+myCorpus <- VCorpus(vecData)
+
+#--------------------------------------
+# Clean Up Your Data Set
+#--------------------------------------
+
+# Make a function to remove urls
+removeLinks <- function(x) {
+  gsub("http[^[:blank:]]+","",x)
+}
+
+# Removing hyperlinks from the corpus
+myCorpus <- tm_map(myCorpus, content_transformer(removeLinks))
+
+# Make a function to ensure strings are converted to UTF
+convUTF <- function(x) { 
+  iconv(x, "ASCII", "UTF-8")
+}
+
+# Ensure Strings are Converted to UTF
+myCorpus <- tm_map(myCorpus, content_transformer(convUTF))
+
+# Convert words to lowercase
+myCorpus <- tm_map(myCorpus, content_transformer(tolower))
+
+# Remove punctuation
+myCorpus <- tm_map(myCorpus, removePunctuation)
+
+# Remove numbers
+myCorpus <- tm_map(myCorpus, removeNumbers)
+
+# Remove stop-words
+myCorpus <- tm_map(myCorpus, removeWords, stopwords("english"))
+
+# Remove extra white spaces
+myCorpus <- tm_map(myCorpus, stripWhitespace)
+
+# Stemming
+myCorpus<- tm_map(myCorpus, stemDocument, language = "english")
+
+#--------------------------------------
+# Build a Term Frequency Matrix
+#--------------------------------------
+
+# Matrix with Term Frequency
+dtm <- TermDocumentMatrix(myCorpus)
+dtm
+
+```
+
+**(a) Cluster the resulting documents using the k-means algorithm with a suitable distance metric. Explain in plain text the information potentially encoded in each cluster. Tip: you can use decision trees to help you with this task.**
+
+```{r}
+#--------------------------------------
+# Assess the Optimal Number of Clusters with the Elbow Method
+#--------------------------------------
+
+#Conduct the Elbow Method to Check for optimal number of Clusters
+wss <- (nrow(dtm) - 1) * sum(apply(dtm, 2, var))
+
+for (i in 2:15) wss[i] <- sum(kmeans(df.spotify, 
+                                     centers = i)$withinss)
+
+plot(1:15, dtm, type = "b", xlab = "Number of Clusters", 
+     ylab = " Within Groups Sum of Squares", 
+     main = "Assesssing the Optimal Number of Clusters with the Elbow Method", 
+     pch = 20, cex = 2)
+
+dtm <- as.matrix(dtm)
+rsltKmeans <- kmeans(dtm, 5)
+
+# Cluster Plot against 1st 2 principal components
+clusplot(dtm, rsltKmeans$cluster, 
+         color = TRUE, shade = TRUE, 
+         labels = 2, lines = 0, cor = FALSE)
+
+
+```
+
+**(b) Manually label all the tweets in your data set as positive (label = 1), negative (label = -1), and neutral (label = 0). Thereafter, using 10-fold cross validation, report the overall accuracy of a Naive Bayes model when predicting the target (labels). Tip: you might (or might not) have to reduce the sparsity of the term frequency matrix to get higher accuracy.**
+
+```{r}
+
+# Remove Sparse Terms
+dtm2 <- removeSparseTerms(dtm, sparse = 0.9)
+
+# Redefine dtm2 as a matrix
+dtm2 <- as.matrix(dtm2) 
+
+#--------------------------------------
+# Naive Bayes Classifier
+#--------------------------------------
+
+#Randomize the order of observations
+dtm <- dtm[sample(1:nrow(dtm)), ]
+
+# Create 10 equally sized folds
+n.Folds <- 10
+Folds.tweets <- cut(seq(1, nrow(dtm)), 
+                     breaks = n.Folds, 
+                     labels = FALSE)
+
+# Create Empty Vectors to Collect Results
+accuracy.NB <- rep(NA, n.Folds)
+specificity.NB <- rep(NA, n.Folds)
+sensitivity.NB <- rep(NA, n.Folds)
+
+# Perform the 10-fold cross validation for Naive Bayes
+
+for(i in 1 : n.Folds) { 
+  testIndexes <- which(Folds.tweets == i, arr.ind = TRUE)
+  df.tweet.ai.test <- dtm[testIndexes, ]
+  df.tweet.ai.train <- dtm[-testIndexes, ]
+  
+  # Fit the NB Model
+  rslt.NB <- naiveBayes(mdl.tweet.ai, data = df.tweet.ai.train)
+  
+  # Predict Classification for Test Set
+  pred.NB <- predict(rslt.NB, df.tweet.ai.test, type = "class")
+  
+  # Overall Accuracy
+  accuracy.NB[i] <- mean(pred.NB == df.tweet.ai.test)
+  
+  specificity.NB[i] <- specificity(df.tweet.ai.test, 
+                                   pred.NB, 
+                                   positive = "1")
+  
+  sensitivity.NB[i] <- specificity(df.tweet.ai.test, 
+                                   pred.NB, 
+                                   negative = "-1")
+  
+  }
+
+```
+
+##Q2
+
+**Collect the news from News API about Volkswagen, Toyota, Honda, BMW, Mercedes-Benz, Ford, Volvo, and Tesla over the past 150 days.**
+
+```{r}
+# Load Current Date
+now <- Sys.Date()
+
+# Chosen Topic
+urlBefore <- "https://newsapi.org/v2/everything"
+topic <- "Volkswagen"
+
+  for (d in 0:150) {
+   # Empty Data frame to collect data
+   jsonNews <- data.frame()
+   #define an empty jsonNews dataframe
+   vbls <- c("author", "title",  "description", "publishedAt", "url")
+
+   # Define the from and to dates, and print to console in order
+   # to keep track of the process
+   fromDate <- strftime(now - d,  format = "%Y-%m-%d")
+   toDate   <- strftime(fromDate, format = "%Y-%m-%d")
+   cat("From", fromDate, "to", toDate, "\n")
+   
+   # Define the url, which is used to get the date from the api
+   url <- paste0(urlBefore, 
+                 "?q=", topic,
+                 "&from=", fromDate,
+                 "&to=", toDate,
+                 "&sortBy=publishedAt", 
+                 "&apiKey=a91baad69f2e464699b7a06c7c43c22d") 
+   
+   jsonTmp  <- fromJSON(url)
+  } 
+   #Result taking from a data frame and stored in jsonNews 
+    dataTmp <- as.data.frame(jsonTmp$articles[vbls])
+    jsonNews <- rbind(jsonNews, dataTmp)
+```
+
+
+```{r results = "hide", warning = FALSE, message = FALSE, include = FALSE, eval = FALSE}
+#--------------------------------------
+# Load Relevant Packages
+#--------------------------------------
+library(jsonlite)
+
+# Load Current Date
+now <- Sys.Date()
+
+# Chosen Topic
+urlBefore <- "https://newsapi.org/v2/everything"
+
+news_api_call <- function(car) { 
+  for (d in 0:150) {
+   # Empty Data frame to collect data
+   jsonNews <- data.frame()
+   #define an empty jsonNews dataframe
+   vbls <- c("author", "title",  "description", "publishedAt", "url")
+
+   # Define the from and to dates, and print to console in order
+   # to keep track of the process
+   fromDate <- strftime(now - d,  format = "%Y-%m-%d")
+   toDate   <- strftime(fromDate, format = "%Y-%m-%d")
+   cat("From", fromDate, "to", toDate, "\n")
+   
+   # Define the url, which is used to get the date from the api
+   url <- paste0(urlBefore, 
+                 "?q=", car,
+                 "&from=", fromDate,
+                 "&to=", toDate,
+                 "&sortBy=publishedAt", 
+                 "&apiKey=f02b8d39b61c4290b4014810d3ef1060") 
+   
+   jsonTmp  <- fromJSON(url)
+  } 
+   #Result taking from a data frame and stored in jsonNews 
+    dataTmp <- as.data.frame(jsonTmp$articles[vbls])
+    jsonNews <- rbind(jsonNews, dataTmp)
+  
+}
+
+df.Volkswagen <- news_api_call(car = "volkswagen")
+df.Toyota <- news_api_call("toyota")
+df.Honda <- news_api_call("honda")
+df.BMW <- news_api_call("bmw")
+df.MercedesBenz <- news_api_call("mercedes-benz")
+df.Ford <- news_api_call("ford")
+df.Volvo <- news_api_call("volvo")
+df.Tesla <- news_api_call("tesla")
+
+save(list = c("df.Volkswagen", "df.Toyota", "df.Honda", "df.BMW", "df.MercedesBenz", "df.Ford", "df.Volvo", "df.Tesla"), file = "cars.rda")
+
+```
+
+**(a) Use the difference between the number of positive and negative words as the definition of sentiment. Which company has more positive news? Plot a boxplot with the resulting scores.**
+
+```{r}
+
+#--------------------------------------
+# Load Relevant Files
+#--------------------------------------
+#Load File
+#load(file = "cars.rda")
+# Read list of Positive and Negative Words
+positive_words <- readLines("positive_words.txt")
+negative_words <- readLines("negative_words.txt")
+
+clean_corpus <- function(x) { 
+  
+  vecData <- VectorSource(x$description)
+  myCorpus <- VCorpus(vecData)
+  
+  # Remove Links
+  myCorpus <- tm_map(myCorpus, content_transformer(removeLinks))
+
+  # Ensure Strings are Converted to UTF
+  #myCorpus <- tm_map(myCorpus, content_transformer(convUTF))
+
+  # Convert words to lowercase
+  myCorpus <- tm_map(myCorpus, content_transformer(tolower))
+
+  # Remove punctuation
+  myCorpus <- tm_map(myCorpus, removePunctuation)
+
+  # Remove numbers
+  myCorpus <- tm_map(myCorpus, removeNumbers)
+
+  # Remove stop-words
+  myCorpus <- tm_map(myCorpus, removeWords, stopwords("english"))
+
+  # Remove extra white spaces
+  myCorpus <- tm_map(myCorpus, stripWhitespace)
+
+  # Stemming
+  myCorpus<- tm_map(myCorpus, stemDocument, language = "english")
+
+  # Complete Words using the corpus
+  #stemCompletion(stem_words, myCorpus)
+}
+myCorpus.Volkswagen <- convert_clean_corpus(df.Volkswagen)
+myCorpus.Toyota <- convert_clean_corpus(df.Toyota)
+myCorpus.Honda <- convert_clean_corpus(df.Honda)
+myCorpus.BMW <- convert_clean_corpus(df.BMW)
+myCorpus.Ford <- convert_clean_corpus(df.Ford)
+myCorpus.MercedesBenz <- convert_clean_corpus(df.MercedesBenz)
+myCorpus.Volvo <- convert_clean_corpus(df.Volvo)
+myCorpus.Tesla <- convert_clean_corpus(df.Tesla)
+
+#------------------------------------------------------------
+
+#--------------------------------------
+# Score Volkswagen
+#--------------------------------------
+
+#Initiate the Score Topic
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Volkswagen)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Volkswagen[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+dictCorpus <- myCorpus.Volkswagen
+myCorpusTokenized <- lapply(myCorpus.Volkswagen, scan_tokenizer)
+myTokensStemCompleted <- lapply(myCorpusTokenized,
+                                stemCompletion, 
+                                dictCorpus)
+df.Volkswagen.Corp <- data.frame(text = sapply(myTokensStemCompleted, paste, collapse = " "), 
+                                 stringsAsFactors = FALSE)
+df.Volkswagen.Corp$score_topic <- scoreTopic
+
+score.Volkswagen <- scoreTopic
+
+```
+
+```{r}
+#--------------------------------------
+# Score Toyota
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Toyota)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Toyota[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.Toyota <- scoreTopic
+
+
+```
+
+```{r}
+#--------------------------------------
+# Score Honda
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Honda)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Honda[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.Honda <- scoreTopic
+
+```
+
+```{r}
+#--------------------------------------
+# Score BMW
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.BMW)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.BMW[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.BMW <- scoreTopic
+
+
+```
+
+
+```{r}
+#--------------------------------------
+# Score Mercedes-Benz
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.MercedesBenz)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.MercedesBenz[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.MercedesBenz <- scoreTopic
+
+```
+
+```{r}
+#--------------------------------------
+# Score Ford
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Ford)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Ford[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.Ford <- scoreTopic
+
+
+```
+
+```{r}
+#--------------------------------------
+# Score Volvo
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Volvo)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Volvo[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.Volvo <- scoreTopic
+
+```
+
+```{r}
+#--------------------------------------
+# Score Tesla
+#--------------------------------------
+
+scoreTopic <- 0
+# Start a loop over the documents
+for(i in 1:length(myCorpus.Tesla)) {
+   
+  # Store separate words in character vector
+  terms <- unlist(strsplit(myCorpus.Tesla[[i]]$content, " "))
+  
+  # Determine the number of positive matches
+  pos_matches <- sum(terms %in% positive_words)
+  
+  # Determine the number of negative matches
+  neg_matches <- sum(terms %in% negative_words)
+  
+  # Store the difference in the results vector
+  scoreTopic[i] <- pos_matches - neg_matches
+  } # End of the for loop
+
+score.Tesla <- scoreTopic
+```
+```{r}
+
+df <- cbind(score.Tesla, score.BMW, score.Ford, score.Honda, 
+            score.Toyota, score.MercedesBenz, score.Volkswagen, score.Volvo)
+
+# Total Sum of Sentiment Scores
+colSums(df, na.rm = TRUE)
+
+# Boxplot
+boxplot(df, ylab =  "Sentiment Score", las = 2)
+
+```
+
+According to this corpus, Ford has the most positive news. 
+
+
+**(b)Based on the scores obtained in previous step, decide by yourself the appropriate cutoffs to label all news as positive (label = 1), neutral (label = 0), and negative (label = -1). Thereafter, using 10-fold cross validation, compare the accuracy of a Naive Bayes model against a SVM model when predicting the target (labels). Tip: you might (or might not) have to implicitly select variables by reducing the sparsity of the term frequency matrix in order to speed up the learning process.**
+
+```{r}
+
+```
+
+
+

@@ -1,0 +1,15 @@
+100,Rotterdam,adminBram,programming
+101,Rotterdam,adminDeniz,is1234
+102,Rotterdam,adminLoic,an
+103,Rotterdam,adminGabri,amazing
+107,Lelystad,adminAwesome,Awesome
+101,Amsterdam,adminBart,elective
+102,Amsterdam,adminLunch,Lunchisgood
+110,Amsterdam,adminDinner,dinnerisgood
+111,Amsterdam,adminBreakfast,breakfastisgood
+87,Amsterdam,adminSleepy,sleepisgood
+99,Amsterdam,adminBlabla,talking
+795,Amsterdam,qwerty,qwerty
+124,Rotterdam,adminYashar,bossofprogramming
+327,Berlin,yasharAdmin,yasharAdmin
+933,Berlin,denizFlight,deniz

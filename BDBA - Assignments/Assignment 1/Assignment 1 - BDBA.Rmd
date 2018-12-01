@@ -1,0 +1,322 @@
+---
+title: "Assignment 1 - BDBA"
+author: "Loic Roldan Waals, 409763 & Iris Bominaar, 411495"
+date: "March 25, 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 9.1 Conceptual
+
+## Question 1
+
+In a regression tree the target variable does not have classes, therefore a regression model is fit to the target variable using each of the independent variables. 
+
+Entropy is used to calculate the amount of disorder of a specific node, meaning calculating the presence of one class of the target variable compared to the other class. The purer the data, the higher the presence of one specific class. Since, for regression tree the target variable does not have clear classes, entropy cannot be calculated and thus not used as a measure when splitting nodes. Instead other measures such as the sum of squared errors or cross validation need to be used. 
+
+
+
+## Question 2
+### Part (a)
+The corresponding tree to the partition of the predictor space is shown in figure 1 below.
+
+![Decision Tree](/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 1/Q2a.PNG)
+
+\pagebreak
+
+### Part (b) 
+The corresponding diagram to the right-hand panel is shown in figure 2 below.
+
+![Diagram of predictor space](/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 1/Q2b.PNG)
+
+\pagebreak
+
+
+#9.2 Applied
+## Question 3
+### Part (a)
+First the data was downloaded from the website. We then import the file and change the date variables to actual dates so that R recognizes them. The data is quickly inspected with the *summary* function. This is performed with the following command:
+```{r loadData}
+setwd("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 1")
+
+library(readr)
+train_users_2 <- read_csv(file="train_users_2.csv", 
+    col_types = cols(date_account_created = col_date(format = "%Y-%m-%d"), 
+        date_first_booking = col_date(format = "%Y-%m-%d"), 
+        gender = col_character()))
+
+summary(train_users_2$date_account_created)
+summary(train_users_2$timestamp_first_active)
+summary(train_users_2$date_first_booking)
+summary(train_users_2$age)
+summary(train_users_2$signup_flow)
+
+summary(as.factor(train_users_2$gender))
+summary(as.factor(train_users_2$signup_method))
+summary(as.factor(train_users_2$language))
+summary(as.factor(train_users_2$affiliate_channel))
+summary(as.factor(train_users_2$affiliate_provider))
+summary(as.factor(train_users_2$first_affiliate_tracked))
+summary(as.factor(train_users_2$signup_app))
+summary(as.factor(train_users_2$first_device_type))
+summary(as.factor(train_users_2$first_browser))
+summary(as.factor(train_users_2$country_destination))
+```
+
+The variables with missing values include:
+
+* *date_first_booking*
+* *age*
+* *first_affiliate_tracked* \newline
+
+
+**i.** As can be seen, the *age* variable has 87,990 missing values, with *2014* being the highest age and *1* being the lowest age. To clean this data, the mean imputation technique is used to replace:
+
+* Any value smaller than 18 years old.
+* Any value larger than 100 years old.
+* All missing values for *age*.
+
+The range of 18-100 years old is arbitrary and considered to be a reasonable range for the ages of users. It is to be noted that you need to be 18 years old to use Airbnb. To perform what has been described above, the following code is used: \newline
+
+```{r cleaning}
+cleaned_train <- train_users_2
+
+cleaned_train$age[is.na(cleaned_train$age)] <- mean(cleaned_train$age, na.rm = TRUE)
+
+cleaned_train$age[cleaned_train$age < 18 | cleaned_train$age > 100] <- mean(cleaned_train$age)
+
+```
+
+
+**ii.** For the other missing values, namely *date_first_booking*, with 124,543 missing values, and *first_affiliate_tracked* with 6,065 missing values, two approaches are used. With *first_affiliate_tracked*, all missing values are deleted, this is mainly due to the small percentage of missing values (2.8%).
+
+For *date_first_booking*, deleting the large number of missing values can pose a problem, given that we have some variables with many factors (e.g. *language* and *first_browser*) and that the missing values account for almost half the data set. Hence, the missing values are imputed with the average date.
+
+With other variables, if there is a factor for *unknown* or *other*, these are left as they may contain valuable information. Finally the variable *id* is removed as it does not help in our analysis. To delete the missing values the following code is used:
+
+```{r deleteMissing}
+cleaned_train$date_first_booking[is.na(cleaned_train$date_first_booking)] <-
+  mean(cleaned_train$date_first_booking, na.rm = TRUE)
+cleaned_train <- cleaned_train[complete.cases(cleaned_train),]
+
+cleaned_train$id <- NULL
+```
+
+This leaves us with 207,386 observations, or 97.2% of the original data set. \newline
+
+### Part (b)
+The new values for the descriptive summary are as follows:
+
+```{r newSummary}
+summary(cleaned_train$date_account_created)
+summary(cleaned_train$timestamp_first_active)
+summary(cleaned_train$date_first_booking)
+summary(cleaned_train$age)
+summary(cleaned_train$signup_flow)
+
+summary(as.factor(cleaned_train$gender))
+summary(as.factor(cleaned_train$signup_method))
+summary(as.factor(cleaned_train$language))
+summary(as.factor(cleaned_train$affiliate_channel))
+summary(as.factor(cleaned_train$affiliate_provider))
+summary(as.factor(cleaned_train$first_affiliate_tracked))
+summary(as.factor(cleaned_train$signup_app))
+summary(as.factor(cleaned_train$first_device_type))
+summary(as.factor(cleaned_train$first_browser))
+summary(as.factor(cleaned_train$country_destination))
+```
+
+It appears that no factor was disproportionately affected by the deletion of the missing values of *first_affiliate_tracked*. Some highlights from the descriptive analysis:
+
+* The biggest group in the *gender* variable is *unknown* (44.3%).
+* The basic sign up method is by far the most common (71.5%).
+* English is by far the most common language (96.6%).
+* There are 25 selected language preferences.
+* Bookings are mainly provided directly as the direct group in the *affiliate_provider* variable comprises of 64.6%.
+* The majority of the first affiliates are not tracked (52.7%).
+* The web is by far the most popular sign-up app (86.0%).
+* The three most common browsers (Chrome, Safari and Firefox) account for 68.8% of all the instances in the *first_browser* variable.
+* There are over 20 different first browsers
+* The majority of the sessions did not lead to a booking (58.0%). 
+* The most booked place was the US with 70.1% of all bookings
+
+### Part (c)
+Now the data set is divided into a training set and a test set. But first the data set is reduced to a size of 20,000 to make it easier and quicker to compute. As is convention, 80% will be the training set and 20% will be the test set. The following code is used:
+
+```{r trainTestSelect}
+set.seed(12345)
+
+library(caTools)
+smaller = sample.split(cleaned_train$country_destination, SplitRatio = 0.0964385)
+smallSet = subset(cleaned_train, smaller == TRUE)
+
+
+sample <- sample.split(smallSet$country_destination, SplitRatio = 0.8)
+
+train = subset(smallSet, sample == TRUE)
+test = subset(smallSet, sample == FALSE)
+```
+To check whether the train and test set have similar proportions of destination countries, the descriptive statistics of the target variable of each are checked again.
+
+```{r compareTrainTest}
+summary(as.factor(train$country_destination))
+summary(as.factor(test$country_destination))
+```
+It appears that the train set has about 4 times as many of each country as the test set, this is what we expected. \newline
+
+### Part (d)
+Now the classification tree will be trained and its performance will be evaluated, all possible variables were included, except for *id*. The one variable that was not possible to include was *language* as the training set contained languages that were not in the test set and vice versa. The cause of this is likely due to English being a dominating language and the abundance of language preferences with few instances.
+```{r tree}
+library("rpart")
+library("rpart.plot")
+library("caret")
+library("e1071")
+
+tree = rpart(country_destination ~ date_account_created + timestamp_first_active + 
+               date_first_booking + gender + age + signup_method + signup_flow + 
+               affiliate_channel + affiliate_provider + first_affiliate_tracked + 
+               signup_app + first_device_type + first_browser, 
+             data = train, 
+             method = "class", 
+             parms = list(split = "information"))
+
+testPredict = test
+testPredict$country_destination = NULL
+testPredict$language = NULL
+
+predictions = as.character(predict(tree, testPredict, type = "class"))
+actual = test$country_destination
+
+confusionMatrix(predictions, actual)
+```
+With we can see above that the accuracy is 87.4%. The model appears to have focused on only getting *NDF* and *US* right. This seems logical as these comprise of 87.4% of the sample. The model did not bother trying to learn any other destinations, likely because the next largest destination, that is not *other*, is *FR* with only 2.4% of the sample. 
+
+### Part (e)
+The decision tree looks as follows: 
+```{r treeVisuals}
+rpart.plot(tree)
+```
+It appears that the model bases its decision solely on the date of the first booking. It is not clear from the rule set what the dates are, but there appear to only be 2 categories:
+
+* At a certain date.
+* Any other date.
+
+With just these three rules the model was able to perfectly predict all *NDF* instances. This result is intriguing as the majority of the *date_first_booking* values were missing. The fact that such a perfect cutoff is possible is very suspicious as logically *date_first_booking* does not relate to country booking choice. 
+
+Further investigation shows that the number of missing values for *date_first_booking* in **Part (a)** is exactly the same as the number of *NDF* occurrences (124,543). These missing values were imputed to the mean of *date_first_booking*, this was *2013-07-04*. When we look in the data set itself we see all *NDF* occurrences happen on that same date. The most likely explanation for this relationship is that all sessions were first-time sessions, hence if someone does not book, there will not be a *date_first_booking*. The exact date that was then imputed was only the same for the instances of *NDF*. Although this model scores relatively high in accuracy, its validity is quite low due to a technicality of how the *date_first_booking* are used.
+
+Another tree was made where *date_first_booking* is removed, forcing the model to use other variables. This model only achieved an accuracy of  62.6%, it only used *age* and *signup_method* to decide the target variable. Although this model performs worse, it has higher validity. Again this model only chooses *NDF* or *US* and ignores all other options for *country_destination*. Another option, rather than disabling *date_first_booking* is to delete all *NDF* instances This option will be explored in **Part (f)** and **Part (g)**. The code for the the model without *date_first_booking* is shown below:
+
+```{r treeNDANODate}
+library("rpart")
+library("rpart.plot")
+library("caret")
+library("e1071")
+
+tree = rpart(country_destination ~ date_account_created + timestamp_first_active + 
+               gender + age + signup_method + signup_flow + 
+               affiliate_channel + affiliate_provider + first_affiliate_tracked + 
+               signup_app + first_device_type + first_browser, 
+             data = train, 
+             method = "class", 
+             parms = list(split = "information"))
+
+testPredict = test
+testPredict$country_destination = NULL
+testPredict$language = NULL
+testPredict$date_first_booking = NULL
+
+predictions = as.character(predict(tree, testPredict, type = "class"))
+actual = test$country_destination
+
+confusionMatrix(predictions, actual)
+
+rpart.plot(tree)
+```
+
+### Part (f)
+Now we will build another classification tree, but after removing all instances where no booking was made (*NDF*). In this model we could not use *first_browser* for the same reason as *language* in **Part (d)**. Again we limit the total size of data set to 20,000. The following code is used:
+
+```{r removeNDFTree}
+clean_noNDA = cleaned_train[!(cleaned_train$country_destination == "NDF"),] 
+
+set.seed(12345)
+
+library(caTools)
+smaller = sample.split(clean_noNDA$country_destination, SplitRatio = 0.2294367)
+smallSet = subset(clean_noNDA, smaller == TRUE)
+
+
+sample <- sample.split(smallSet$country_destination, SplitRatio = 0.8)
+
+train = subset(smallSet, sample == TRUE)
+test = subset(smallSet, sample == FALSE)
+
+
+library("rpart")
+library("rpart.plot")
+library("caret")
+library("e1071")
+
+tree = rpart(country_destination ~ date_account_created + timestamp_first_active + 
+               date_first_booking + gender + age + signup_method + signup_flow +
+               affiliate_channel + affiliate_provider + first_affiliate_tracked + 
+               signup_app + first_device_type, 
+             data = train, 
+             method = "class", 
+             parms = list(split = "information"))
+             
+testPredict = test
+testPredict$country_destination = NULL
+testPredict$language = NULL
+
+predictions = as.character(predict(tree, testPredict, type = "class"))
+actual = test$country_destination
+
+confusionMatrix(predictions, actual)
+```
+
+### Part (g)
+The decision tree looks as following:
+```{r treeVisualsNoNDF}
+rpart.plot(tree)
+```
+
+As we can see, this model does not make any decisions. It simply always chooses *US* as this is the largest category (70.1%). The next largest category, that is not *other*, is again *FR*, this time with 5.6%. The same behavior is observed when the sample size is increased.
+
+Compared to the second model with *NDF*, this model performs better. The performance of either model is mostly influenced by the unbalanced classes and the fact that there are many countries to choose from, a small proportion of which accounts for the majority of the instances. This unbalance becomes even more apparent when you plot a bar chart of all possible destinations. 
+
+```{r bar}
+counts = table(cleaned_train$country_destination)
+barchart(counts)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

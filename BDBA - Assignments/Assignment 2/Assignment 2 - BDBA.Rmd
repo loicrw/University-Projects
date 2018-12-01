@@ -1,0 +1,267 @@
+
+---
+title: "Assignment 2 - BDBA"
+author: "Loic Roldan Waals, 409763 & Iris Bominaar, 411495"
+date: "March 28, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+First the data was downloaded from the website, as the headers were missing, these were added to ensure understandability of the data set when importing it. Most of the variables are straight forward, there are two exceptions: *fnlwgt* (final weight) and *education-num*. The description explains that *"The weights on the CPS files are controlled to independent estimates of the civilian noninstitutional population of the US."* and that *"People with similar demographic characteristics should have similar weights."*. It was also noted that these weights are only valid within their own state, given that we have no data as to which state people belong to, this lowers the validity of this measure in this research. 
+
+Finally it is still unclear what *education-num* means, for now it is assumed to be the total number of years that someone spent in the education system.
+
+# Question 2
+We import both data sets and merge them with the following code:
+```{r import data}
+#determine where files are read and written
+setwd("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Workshops/Session 2")
+
+
+#read all the data
+library(readr)
+adult_data <- read_csv("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 2/adult.data.csv")
+
+adult_test <- read_csv("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 2/adult.test.csv")
+
+
+#merge datasets
+alldata = rbind(adult_data, adult_test)
+```
+
+# Question 3 
+The data is now inspected more thoroughly. We find many surprising problems in many variables. These are further discussed below.
+
+## Salary
+It appears that in *adult.data*, salary has the factors *<=50K* and *>50K*; in *adult.test*, salary has the factors *<=50K.* and *>50K.*. Note that the *adult.test* set has a period at the end. We recode these all four of these factors to *1* and *0*, with *1* meaning that an observation earns more than $50K. We then rename the variable to *target* for ease of use. The code that is used is the following: 
+
+```{r inspectSalary}
+#transform the salary into a binomial variable
+alldata$target[alldata$salary == "<=50K" | alldata$salary == "<=50K."] <- 0
+alldata$target[alldata$salary == ">50K" | alldata$salary == ">50K."] <- 1
+alldata$salary <- NULL
+alldata$target <- as.factor(alldata$target)
+
+```
+
+## Continuous variables
+There are two problems with several continuous variables, namely some unreasonable values and the fact that the variables have widely differing ranges.
+
+With the variable *capitalGain* we find a positively skewed distribution. The problem is that there are 244 instances where the capital gain is exactly 99,999. This is peculiar as the next highest value for *capitalGain* is only 41,310. Whether this indicates a missing value or that the input could not handle numbers larger than 99,999 is unclear. Since these values only account for 0.5% of the total data set, these are set to missing so that they can be deleted afterwards. The code that is used is the following:
+```{r inspectContinous}
+#get rid of unreasonable values
+hist(alldata$capitalGain)
+summary(alldata$capitalGain)
+summary(as.factor(alldata$capitalGain))
+
+
+alldata$capitalGain[alldata$capitalGain > 90000] <- NA
+summary(alldata$capitalGain)
+
+```
+
+Furthermore we note that there are widely differing ranges for all the continuous variables (e.g. *educationNum* with a range of 15 and *fnlwgt* with a range of 1,478,115). To assure the models use these variables effectively they are scaled using the *scale* function. This subtracts the mean from the value and divides the result by the standard deviation of the variable. This is done after all missing values are removed, the code that is used is in the subsection **Categorical variables**.
+```{r range}
+summary(alldata$educationNum)
+summary(alldata$fnlwgt)
+
+```
+
+## Categorical variables
+There are also several categorical variables that have some factors with very few observations (e.g. "Married-AF-spouse" in *maritalStatus*). To ensure no factors are present in a test set during cross validation that are not present in the training set of the same fold, these values are set to missing so that they can be deleted afterwards. It is also noted that these factors with very few observations are very prevalent in the *nativeCountry* variable, for this reason it will not be included in the model as it can present many problems when certain factors are in a training set, but not a test set. These uncommon factors are likely due to the fact that 91% of the people are from the US. Thus, we compute a variable that shows whether someone is originally from the us or not, with *1* representing a US native and *0* representing an immigrant. 
+
+Finally all missing values are deleted. After the deletion the continuous variables are scaled and *nativeCountry* is recoded to *USNative*. The total data set now contains 44,855 observations, or  91.8% of the original data set. The code that is used is the following:
+
+```{r inspectCategorica and scalel}
+#get rid of variables with few observations
+summary(as.factor(alldata$workclass))
+summary(as.factor(alldata$education))
+summary(as.factor(alldata$maritalStatus))
+summary(as.factor(alldata$occupation))
+summary(as.factor(alldata$nativeCountry))
+
+alldata$workclass[alldata$workclass == "Without-pay"] <- NA
+alldata$workclass[alldata$workclass == "Never-worked"] <- NA
+alldata$education[alldata$education == "Preschool"] <- NA
+alldata$maritalStatus[alldata$maritalStatus == "Married-AF-spouse"] <- NA
+alldata$occupation[alldata$occupation == "Armed-Forces"] <- NA
+
+
+#delete all missing values
+alldata <- alldata[complete.cases(alldata),]
+
+#scale all int data
+alldata$age <- scale(alldata$age)
+alldata$fnlwgt <- scale(alldata$fnlwgt)
+alldata$capitalGain <- scale(alldata$capitalGain)
+alldata$capitalLoss <- scale(alldata$capitalLoss)
+alldata$hoursPerWeek <- scale(alldata$hoursPerWeek)
+
+#recode nativeCountry
+alldata$USNative[alldata$nativeCountry == "United-States"] <- 1
+alldata$USNative[alldata$nativeCountry != "United-States"] <- 0
+alldata$USNative <- as.factor(alldata$USNative)
+alldata$nativeCountry <- NULL
+```
+
+
+# Question 4
+In this question we check all the variables again after having cleaned them. If there was nothing noteworthy about a variable's values, it is not mentioned below. The highlights of this analysis include:
+
+* Age has a slight positive skew
+* No logical summary can be given of the *fnlwgt* variable
+* The majority of the observations (92.1%) have a *capitalGain* value of 0
+* The majority of the observations (95.2%) have a *capitalLoss* value of 0
+* The most common hours per week number is 40, with 47.3% of all observations
+* 73.8% works in the private sector
+* 41.1% are husbands compared to only 4.8% who are wives. This imbalance is also reflected in the *sex* variable
+* 67.4% of all cases are male, this imbalance could be due to the fact that the census data was from 1994, when women were not working as much as they are today.
+* 86.0% of all observations were white
+* As stated before 91.4% is originally from the US.
+* The majority of all cases (75.6%), does not earn more than $50K, thus we are dealing with unbalanced classes. If we had a model that simply always predicts that an observation is earning less than $50K, it would have an expected accuracy of around 75%. 
+
+
+# Question 5
+We now define our model and split the data into 10 folds, in each fold we:
+
+* Divide the data into a train and test set
+* Train all three models (Logit, Support Vector Machine) on the train set
+* Predict test set values using the trained models
+* Measure the accuracy
+
+The optimal number of iterations for the Neural Network were found by trying each value in 100 iteration increments and choosing the one with the lowest standard deviation. In our case this turned out to be 200 iterations.
+
+The code that is used for this is the following:
+```{r cross validation}
+#load all packages
+library("rpart")
+library("rpart.plot")
+library("caret")
+library("e1071")
+library(caTools)
+library(C50)
+library(nnet)
+library(e1071)
+library(stargazer)
+library(caret)
+
+#Set the seed
+set.seed(1)
+
+#define the model
+modelA <- target ~ age + workclass + fnlwgt + education + educationNum + maritalStatus + occupation + relationship + race + sex +
+  capitalGain + capitalLoss + hoursPerWeek + USNative
+
+#cross validation
+nFolds = 10
+myFolds <- cut(seq(1,nrow(alldata)),
+               breaks = nFolds,
+               labels = FALSE)
+
+#initialise accuracy variables
+accLogit <- rep(NA, nFolds)
+accSVM <- rep(NA, nFolds)
+accNN <- rep(NA, nFolds)
+
+for (i in 1:nFolds) {
+  cat("Analysis of fold", i, "\n")
+  
+  #define training and test set (print commands are to help troubleshoot 
+  #and determine where the programme aborted during errors)
+  testIndex <- which(myFolds == i, arr.ind = TRUE)
+  crossTest <- alldata[testIndex, ]
+  crossTrain <- alldata[-testIndex, ]
+  print("data allocated")
+  
+  #train the models
+  rsltLogit <- glm(modelA, data = crossTrain, family = "binomial")
+  print("logit trained")
+  rsltSVM <- svm(modelA, data = crossTrain)
+  print("svm trained")
+  rsltNN <- nnet(modelA, data = crossTrain, maxit = 200, size = 10)
+  print("nn trained")
+  
+  #predict values
+  pdLogit = predict(rsltLogit, crossTest, type = "response")
+  pdLogit[pdLogit > 0.5] <- 1
+  pdLogit[pdLogit <= 0.5] <- 0
+  print("logit predicted")
+  
+  pdSVM = predict(rsltSVM, crossTest)
+  print("svm predicted")
+  
+  pdNN = predict(rsltNN, crossTest, type = "raw")
+  pdNN[pdNN > 0.5] <- 1
+  pdNN[pdNN <= 0.5] <- 0
+  print("nn predicted")
+  
+  #measure accuracy
+  accLogit[i] = mean(pdLogit == crossTest$target)
+  print("Logit accuracy saved")
+  accSVM[i] = mean(pdSVM == crossTest$target)
+  print("SVM accuracy saved")
+  accNN[i] = mean(pdNN == crossTest$target)
+  print("NN accuracy saved")
+}
+
+#determine the average accuracy over the 10 folds for each model
+avgAccLogit = mean(accLogit)
+avgAccSVM = mean(accSVM)
+avgAccNN = mean(accNN)
+
+#determine the standard deviation of the accuracy over the 10 folds
+#for each model
+sdLogit = sd(accLogit)
+sdSVM = sd(accSVM)
+sdNN = sd(accNN)
+
+#print all results
+avgAccLogit
+avgAccSVM
+avgAccNN
+
+sdLogit
+sdSVM
+sdNN
+```
+
+# Question 6 
+The best model appears to be the Neural Network with an accuracy of `r avgAccNN * 100`%, second comes the Support Vector Machine with an accuracy of `r avgAccSVM *100`% and last comes Logit with `r avgAccLogit * 100`%. It is to be noted that the difference between the best and worst performers was only about `r (avgAccNN - avgAccLogit) * 100`%, or about 200 observations. Thus the worst performance is not too different from the best.
+
+Additionally, the standard deviations of the accuracy of the Logit, SVM and NN models were `r sdLogit * 100`%, `r sdSVM * 100`% and `r sdNN * 100`% respectively. Again there is not much difference between the most and least consistent model. 
+
+Overall it appears that the Neural Network performed the best in this problem with these parameters. Usually one would use the cross validation to determine the optimal parameters for a model and then calculate its actual performance against the test set. This was not done as we did not separate the train and test set before performing cross validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

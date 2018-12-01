@@ -1,0 +1,158 @@
+---
+title: "Weekly Assignment 5"
+author: "Loïc Roldán Waals  & Kimberly Cheng"
+date: "Wednesday 25 April, 2018"
+output:
+  html_document:
+    pdf_print: paged
+  toc: TRUE
+  pdf_document: default
+---
+
+##Q1
+
+**Using a database with at least 200 selected tweets from previous weekly assignments, clean up your data set and build a term frequency matrix.**
+
+```{r import}
+library(twitteR)
+library(tm)
+
+#set up necessary credentials
+ck <- "EUENyJUa8hrF1UGX2hGtntsAt"
+cs <- "UmARrjPzF2uTGOpzwmgoEvfDwT8kaIUjsiBr9ZLeV8bhfmWH5j"
+at <- "384339592-ENp0huPiFt1kCAGZQzo44kH8C8aaGgEkhFTPz38x"
+as <- "gncNiTOeBvz52QIGdubR1Z2pjSneIWcqAKXajiVEKLvw1"
+
+setup_twitter_oauth(ck, cs, access_token = at, access_secret = as)
+
+
+#collect the stream of tweets and storing it as a dataframe
+t_stream <- searchTwitter('blockchain', resultType="recent", n=500, lang = "en")
+blockchainTweets <- do.call("rbind", lapply(t_stream, as.data.frame))
+tweetText <- blockchainTweets$text
+
+tweetText[499]
+
+# library(stringr)
+# library(plyr)
+# 
+# blockchainTweets$count <- str_count(blockchainTweets$text, ">")
+# sum(blockchainTweets$count)
+# 
+# write.table(tweetText, "tweetText.csv", row.names = FALSE, col.names = TRUE, sep =">")
+# 
+# library(readr)
+# tweetText <- read_delim("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 5/tweetText.csv", 
+#     ">", escape_double = FALSE, trim_ws = TRUE)
+# View(tweetText)
+
+
+
+
+
+
+
+#import the text + the sentiment
+library(readr)
+library(wordcloud)
+library(jsonlite)
+library(tm)
+library(SnowballC)
+
+AITweets <- read_delim("C:/Users/Loic RW/Google Drive/Big Data and Business Analytics/Assignments/Assignment 5/tweetText.csv", ">", escape_double = FALSE, trim_ws = TRUE)
+AITweets$text <- AITweets$x
+
+AITweets$text[499]
+#this to create the 
+# #remove quotation marks
+# AITweets[,1] <- gsub('"',"",AITweets[,1])
+# 
+#remove emoji's
+AITweets$text <- sapply(AITweets$text, function(row) iconv(row, "latin1", "ASCII", sub = ""))
+AITweets$text[499]
+
+#create corpus
+vecdata <- VectorSource(AITweets$text)
+tweets_corpus <- VCorpus(VectorSource(AITweets$text))                
+tweets_corpus[[499]]$content
+
+# #remove links -- does not work for some reason
+# remLinks <- function(x){
+#   gsub(" http [^[: blank :]]+ ","",x)
+# }
+# tweets_corpus <- tm_map(tweets_corpus, content_transformer(remLinks))
+
+#only lower case
+tweets_corpus_clean <- tm_map(tweets_corpus, content_transformer(tolower)) 
+
+#remove punctuation
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, removePunctuation)
+
+#remove english stopwords
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, removeWords, stopwords("english"))           
+
+#remove numbers
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, removeNumbers)                               
+
+#remove unnecessary white space
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, stripWhitespace)    
+
+#stemming
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, stemDocument, language = "english")
+
+tweets_corpus_clean <- tm_map(tweets_corpus_clean, removeWords, c("userexperienceu, blockchain")) 
+
+tweets_corpus_clean[[499]]$content
+
+#make term frequency matrix
+dtm <- TermDocumentMatrix(tweets_corpus_clean)
+dtm
+
+inspect(dtm[1:10, 1:31])
+
+dtm2 <- removeSparseTerms(dtm, sparse = 0.9)
+dtm2
+
+dtm2 <- as.matrix(dtm2)
+distmatrix <- dist(scale(dtm2))
+
+fit <- hclust(distmatrix)
+
+plot(fit)
+```
+
+**(a)Cluster the resulting documents using the k-means algorithm with a suitable distance metric. Explain in plain text the information potentially encoded in each cluster. Tip: you can use decision trees to help you with this task.**
+
+```{r}
+
+```
+
+**(b) Manually label all the tweets in your data set as positive (label = 1), negative (label = -1), and neutral (label = 0). Thereafter, using 10-fold cross validation, report the overall accuracy of a Naive Bayes model when predicting the target (labels). Tip: you might (or might not) have to reduce the sparsity of the term frequency matrix to get higher accuracy.**
+
+```{r}
+
+```
+
+##Q2
+
+**Collect the news from News API about Volkswagen, Toyota, Honda, BMW, Mercedes-Benz, Ford, Volvo, and Tesla over the past 150 days.**
+
+```{r}
+
+```
+
+**(a) Use the difference between the number of positive and negative words as the definition of sentiment. Which company has more positive news? Plot a boxplot with the resulting scores.**
+
+```{r sentiment analysis}
+#check name of the 
+```
+
+
+**(b) Manually label all the news in your data set as positive (label = 1), negative (label = -1), and neutral (label = 0). Thereafter, using 10-fold cross validation, compare the accuracy of a Naive Bayes model against a SVM model when predicting the target (labels). Tip: you might (or might not) have to implicitly select variables by reducing the sparsity of the term frequency matrix in order to speed up the learning process.**
+
+```{r}
+
+```
+
+
+
